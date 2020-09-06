@@ -1,2 +1,3 @@
-# bootgen.github.io
-📄 The official documentation site for BootGen.
+﻿# vuejs.org
+
+This site is built with [hexo](http://hexo.io/). Site content is written in Markdown format located in `src`. Pull requests welcome!
