@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>BootGen</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://vuejs.org/"/>
+  <updated>2020-09-06T08:21:09.762Z</updated>
+  <id>https://vuejs.org/</id>
+  
+  <author>
+    <name>Code Sharp Kft.</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vue.js 1.0.0 Released</title>
+    <link href="https://vuejs.org/2015/10/26/1.0.0-release/"/>
+    <id>https://vuejs.org/2015/10/26/1.0.0-release/</id>
+    <published>2015-10-26T10:00:00.000Z</published>
+    <updated>2020-09-06T08:21:09.762Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
