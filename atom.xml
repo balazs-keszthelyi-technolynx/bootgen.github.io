@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://vuejs.org/"/>
-  <updated>2020-09-06T08:41:01.387Z</updated>
+  <updated>2020-09-06T08:51:07.917Z</updated>
   <id>https://vuejs.org/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Vue.js 1.0.0 Released</title>
-    <link href="https://vuejs.org/2015/10/26/1.0.0-release/"/>
-    <id>https://vuejs.org/2015/10/26/1.0.0-release/</id>
-    <published>2015-10-26T10:00:00.000Z</published>
-    <updated>2020-09-06T08:41:01.387Z</updated>
+    <title>test</title>
+    <link href="https://vuejs.org/2020/09/06/test/"/>
+    <id>https://vuejs.org/2020/09/06/test/</id>
+    <published>2020-09-06T10:50:04.000Z</published>
+    <updated>2020-09-06T08:51:07.917Z</updated>
     
     <summary type="html">
     
