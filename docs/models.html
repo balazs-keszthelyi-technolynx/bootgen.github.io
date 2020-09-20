@@ -204,6 +204,57 @@
     email: <span class="hljs-built_in">string</span>;
 &#125;</code></pre>
 <p>You must have noticed the <code>ServerOnly</code> attribute on the <code>PasswordHash</code> property. The effect of this property is that the password hash is missing on the<br>client side entity. There is also a <code>JsonIgnore</code> attribute on this property on the server side, preventing this attribute to be serialized into JSON.</p>
+<p>You also might notice that the generated entity classes have an integer identifier. This identifier is added automatically, because the user entity is persisted into the database. We will talk later about how BootGen knows that this class needs to be persisted.</p>
+<p>The authentication method is also defines in the Generator/Models.cs file, with the following:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticationData</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Password &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;
+
+<span class="hljs-keyword">class</span> <span class="hljs-title">LoginResponse</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Jwt &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> User User &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title">Authentication</span>
+&#123;
+   <span class="hljs-function">LoginResponse <span class="hljs-title">Login</span>(<span class="hljs-params">AuthenticationData data</span>)</span>;
+&#125;</code></pre>
+<p>Because <code>AuthenticationData</code> and <code>LoginResponse</code> are simple data transfer objects (DTOs) that are not persisted in the database, their generated server side counterparts are identical to them. There is no big surprise on the client side either:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> AuthenticationData &#123;
+    email: <span class="hljs-built_in">string</span>;
+    password: <span class="hljs-built_in">string</span>;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> LoginResponse &#123;
+    jwt: <span class="hljs-built_in">string</span>;
+    user: User;
+&#125;</code></pre>
+<p>We can understand how BootGen knows that the <code>User</code> class is supposed to be stored in the database, but <code>AuthenticationData</code> and <code>LoginResponse</code> not, if we look into the Generator/Configuration.cs file:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Resource UserResource &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    UserResource = api.AddResource&lt;User&gt;(<span class="hljs-string">"User"</span>, isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddControllers</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    api.AddController&lt;Authentication&gt;();
+&#125;</code></pre>
+<p>We can see that <code>User</code> is added to the API as a REST resource. Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification is not handled buy te user resource controller. For this resource the following files are generated:</p>
+<ul>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/UsersController.cs" target="_blank" rel="noopener">UsersController.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IUsersService.cs" target="_blank" rel="noopener">IUsersService.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/UsersService.cs" target="_blank" rel="noopener">UsersService.cs</a></li>
+</ul>
+<p>The <code>Authentication</code> interface is added as a controller. As <code>AuthenticationData</code> and <code>LoginResponse</code> classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:</p>
+<ul>
+<li>(AuthenticationController.cs)[<a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs]" target="_blank" rel="noopener">https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs]</a></li>
+<li>(IAuthenticationService.cs)[<a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs]" target="_blank" rel="noopener">https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs]</a></li>
+</ul>
 
   
   
