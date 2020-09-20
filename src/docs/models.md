@@ -6,6 +6,8 @@ order: 3
 
 ## Pre-defined Models
 
+### Entity classes
+
 As most software system has users, BootGen ships with a pre-defined `User` model and a simple JWT authentication. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:
 
 ```csharp
@@ -45,6 +47,8 @@ You must have noticed the `ServerOnly` attribute on the `PasswordHash` property.
 client side entity. There is also a `JsonIgnore` attribute on this property on the server side, preventing this attribute to be serialized into JSON.
 
 You also might notice that the generated entity classes have an integer identifier. This identifier is added automatically, because the user entity is persisted into the database. We will talk later about how BootGen knows that this class needs to be persisted.
+
+### Controller methods
 
 The authentication method is also defines in the Generator/Models.cs file, with the following:
 
