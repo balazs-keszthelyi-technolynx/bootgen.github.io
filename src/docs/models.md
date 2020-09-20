@@ -103,5 +103,5 @@ We can see that `User` is added to the API as a REST resource. Because resources
  * [UsersService.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/UsersService.cs)
 
 The `Authentication` interface is added as a controller. As `AuthenticationData` and `LoginResponse` classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:
- * (AuthenticationController.cs)[https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs]
- * (IAuthenticationService.cs)[https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs]
+ * [AuthenticationController.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs)
+ * [IAuthenticationService.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs)
