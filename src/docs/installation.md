@@ -18,6 +18,6 @@ dotnet restore
 dotnet run
 ```
 
-Now if you navigate to https://localhost:5001 you will see the default Vue.js application.
+Now if you navigate to https://localhost:5001 you will see a login screen.
 
 While working with this template you might also run the server and the client separately, by running the `dotnet run` command in the WebProject and the `npm run serve` in the WebProject/ClientApp folder.
