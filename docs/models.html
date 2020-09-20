@@ -4,22 +4,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head><meta name="generator" content="Hexo 3.9.0">
-    <title>BootGen</title>
+    <title>Creating Models — BootGen</title>
     <meta charset="utf-8">
     <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/menu/index.html">
+    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/docs/models.html">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="BootGen">
+    <meta property="og:title" content="Creating Models — BootGen">
     <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta property="og:image" content="https://bootgen.com//images/logo.png">
 
@@ -60,7 +60,7 @@
     
 
     <script>
-      window.PAGE_TYPE = "menu"
+      window.PAGE_TYPE = "guide"
     </script>
 
     <!-- ga -->
@@ -161,7 +161,7 @@
       
     
     <li>
-      <a href="/docs/models.html" class="sidebar-link">Creating Models</a>
+      <a href="/docs/models.html" class="sidebar-link current">Creating Models</a>
     </li>
   
 </ul>
@@ -172,76 +172,53 @@
 </div>
 
 
-<div class="content menu with-sidebar ">
+<div class="content guide with-sidebar models-guide">
   
     
-      <form id="search-form">
-        <input type="text" id="search-query-menu" aria-label="Search Vue.JS site" class="search-query st-default-search-input">
-      </form>
-      <ul class="menu-root">
   
-    
-    
-      
-        <li><h3>Getting Started</h3></li>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/docs/index.html" class="sidebar-link">Introduction</a>
-    </li>
   
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/docs/installation.html" class="sidebar-link">Installation</a>
-    </li>
+    <h1>Creating Models</h1>
   
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/docs/models.html" class="sidebar-link">Creating Models</a>
-    </li>
   
-</ul>
+    <h2 id="Pre-defined-Models"><a href="#Pre-defined-Models" class="headerlink" title="Pre-defined Models"></a>Pre-defined Models</h2><p>As most software system has users, BootGen ships with a pre-defined <code>User</code> model and a simple JWT authentication. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">ServerOnly</span>]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>Based on this model entity classes are generated on both server and client side.<br>On the server side the generated class is found in WebProject/User.cs:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">JsonIgnore</span>]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>On the client side the generated TypeStript interface is found in WebProject/ClientApp/src/models/User.ts:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> User &#123;
+    id: <span class="hljs-built_in">number</span>;
+    userName: <span class="hljs-built_in">string</span>;
+    email: <span class="hljs-built_in">string</span>;
+&#125;</code></pre>
+<p>You must have noticed the <code>ServerOnly</code> attribute on the <code>PasswordHash</code> property. The effect of this property is that the password hash is missing on the<br>client side entity. There is also a <code>JsonIgnore</code> attribute on this property on the server side, preventing this attribute to be serialized into JSON.</p>
 
-    
   
   
-  
-    
-  
+    <div class="guide-links">
+      
+      
+        <span>← <a href="/docs/installation.html">Installation</a></span>
+      
+      
+      
+    </div>
   
   <div class="footer">
     Caught a mistake or want to contribute to the documentation?
-    <a href="https://github.com/BootGen/bootgen.github.io/blob/source/src/menu/index.md" rel="noopener" target="_blank">
+    <a href="https://github.com/BootGen/bootgen.github.io/blob/source/src/docs/models.md" rel="noopener" target="_blank">
       Edit this on GitHub!
     </a>
   </div>
