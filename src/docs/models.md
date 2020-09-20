@@ -109,3 +109,28 @@ We can see that `User` is added to the API as a REST resource. Because resources
 The `Authentication` interface is added as a controller. As `AuthenticationData` and `LoginResponse` classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:
  * [AuthenticationController.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs)
  * [IAuthenticationService.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs)
+
+### Database Seeds
+
+```csharp
+internal static void AddSeeds(SeedDataStore seedStore)
+{
+    seedStore.Add(UserResource, new List<User>{
+        new User{
+            UserName = "Sample User",
+            Email = "example@email.com",
+            PasswordHash = "AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q==" //password123
+        },
+        new User{
+            UserName = "Sample User 2",
+            Email = "example2@email.com",
+            PasswordHash = "AQAAAAEAACcQAAAAENZt+JlnUq5Ukt83M//z8Y/GlXWwYj6d260pmjQEz3Usac29eNfhmZTXHCGVOz70Hg==" //password123
+        },
+        new User{
+            UserName = "Sample User",
+            Email = "example3@email.com",
+            PasswordHash = "AQAAAAEAACcQAAAAENffyhoiBzkUXycLNzvQOYJJGCXsXw+7U2ZL1ED+kCFCnDmL4yGGQT7Xkr4ZaNV8/A==" //password123
+        }
+    });
+}
+```
