@@ -8,12 +8,10 @@ order: 1
 
 BootGen is a model based, template driven application code generator for ASP.Net Core and Vue.js.
 
-**Model based** means that to tell the generator what to do you have to create an initial model of your application. Unlike other code generators, BootGen does not introduce a separate modelling language. BootGen models are created in the form of C# classes and interfaces, making it really easy to learn.
+**Model based** means that to start working on your project, first you have to create a model of your entities, resources and operations. Unlike other code generators, it is not necessary to learn separate modelling language, because BootGen models are plain C# classes and interfaces.
 
-With the model you create BootGen can generate bot server side and client side code. When you change your model, BootGen will change every affected part of your project consistently.
-
-**Template driven** means that a template belongs to each piece of code you generate (for example entity classes and controllers). These templates are created with [Scriban](https://github.com/lunet-io/scriban). This approach makes it easy to customize the generated code, so that the code you generate can look as if you have written it yourself.
+**Template driven** means that each piece of generated code (for example entity classes and controllers), is described by a [Scriban](https://github.com/lunet-io/scriban) template. Templates are customizable, this way you can make the generated code look consistent with the code you write by hand.
 
 ## Why Use A Code Generator?
 
-We are programers because we love to write code, yet we all know that in every project there are boring parts and exciting parts. We usually have to start with the boring parts, and make those work before we got to write the exciting parts. The boring parts are repetitive, tedious. The boring parts are where many mistakes are made, and to fix those mistakes is where most of the time goes. Would not it be nice to start you next project with the boring parts already done?
+In every software project there are interesting parts that need programmer creativity, and there are boring parts that do not. We usually have to develop the boring parts, before we can work on the interesting parts. The boring parts are repetitive, tedious and error prone. A significant amount of development time is spent on creating these parts, and also a significant amount of time is spent on finding bugs in these parts. Would not it be nice to start your next project with the boring parts already done?
