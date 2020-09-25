@@ -54,7 +54,7 @@ pre code .hljs-constant {
 }
 pre code .hljs-keyword,
 pre code .hljs-attribute {
-  color: #d63200;
+  color: #b34e40;
 }
 pre code .hljs-number,
 pre code .hljs-literal {
@@ -64,7 +64,7 @@ pre code .hljs-class pre code .hljs-title {
   color: #fff;
 }
 pre code .hljs-title {
-  color: #a6e22e;
+  color: #25b36e;
 }
 pre code .hljs-tag pre code .hljs-value,
 pre code .hljs-comment,
@@ -157,7 +157,7 @@ pre {
   -moz-osx-font-smoothing: initial;
 }
 code {
-  color: #d63200;
+  color: #b34e40;
   padding: 3px 5px;
   margin: 0 2px;
   border-radius: 2px;
