@@ -4,22 +4,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head><meta name="generator" content="Hexo 3.9.0">
-    <title>Creating Models — BootGen</title>
+    <title>Pre-defined Models — BootGen</title>
     <meta charset="utf-8">
     <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/docs/models.html">
-    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/docs/models.html">
+    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/docs/pre-defined-models.html">
+    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/docs/pre-defined-models.html">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Creating Models — BootGen">
+    <meta property="og:title" content="Pre-defined Models — BootGen">
     <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta property="og:image" content="https://bootgen.com//images/logo.png">
 
@@ -161,7 +161,7 @@
       
     
     <li>
-      <a href="/docs/models.html" class="sidebar-link current">Creating Models</a>
+      <a href="/docs/pre-defined-models.html" class="sidebar-link current">Pre-defined Models</a>
     </li>
   
 </ul>
@@ -172,15 +172,15 @@
 </div>
 
 
-<div class="content guide with-sidebar models-guide">
+<div class="content guide with-sidebar pre-defined-models-guide">
   
     
   
   
-    <h1>Creating Models</h1>
+    <h1>Pre-defined Models</h1>
   
   
-    <h2 id="Pre-defined-Models"><a href="#Pre-defined-Models" class="headerlink" title="Pre-defined Models"></a>Pre-defined Models</h2><h3 id="Entity-classes"><a href="#Entity-classes" class="headerlink" title="Entity classes"></a>Entity classes</h3><p>As most software system has users, BootGen ships with a pre-defined <code>User</code> model and a simple JWT authentication. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:</p>
+    <h2 id="Entity-classes"><a href="#Entity-classes" class="headerlink" title="Entity classes"></a>Entity classes</h2><p>As most software system has users, BootGen ships with a pre-defined <code>User</code> model and a simple JWT authentication. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
 &#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
@@ -205,7 +205,7 @@
 &#125;</code></pre>
 <p>You must have noticed the <code>ServerOnly</code> attribute on the <code>PasswordHash</code> property. The effect of this property is that the password hash is missing on the<br>client side entity. There is also a <code>JsonIgnore</code> attribute on this property on the server side, preventing this attribute to be serialized into JSON.</p>
 <p>You also might notice that the generated entity classes have an integer identifier. This identifier is added automatically, because the user entity is persisted into the database. We will talk later about how BootGen knows that this class needs to be persisted.</p>
-<h3 id="Controller-methods"><a href="#Controller-methods" class="headerlink" title="Controller methods"></a>Controller methods</h3><p>The authentication method is also defines in the Generator/Models.cs file, with the following:</p>
+<h2 id="Controller-methods"><a href="#Controller-methods" class="headerlink" title="Controller methods"></a>Controller methods</h2><p>The authentication method is also defines in the Generator/Models.cs file, with the following:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticationData</span>
 &#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
@@ -232,49 +232,6 @@
     jwt: <span class="hljs-built_in">string</span>;
     user: User;
 &#125;</code></pre>
-<p>We can understand how BootGen knows that the <code>User</code> class is supposed to be stored in the database, but <code>AuthenticationData</code> and <code>LoginResponse</code> not, if we look into the Generator/Configuration.cs file:</p>
-<pre><code class="hljs csharp"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Resource UserResource &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-
-<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
-&#123;
-    UserResource = api.AddResource&lt;User&gt;(<span class="hljs-string">"User"</span>, isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddControllers</span>(<span class="hljs-params">BootGenApi api</span>)</span>
-&#123;
-    api.AddController&lt;Authentication&gt;();
-&#125;</code></pre>
-<p>We can see that <code>User</code> is added to the API as a REST resource. Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification is not handled buy te user resource controller. For this resource the following files are generated:</p>
-<ul>
-<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/UsersController.cs" target="_blank" rel="noopener">UsersController.cs</a></li>
-<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IUsersService.cs" target="_blank" rel="noopener">IUsersService.cs</a></li>
-<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/UsersService.cs" target="_blank" rel="noopener">UsersService.cs</a></li>
-</ul>
-<p>The <code>Authentication</code> interface is added as a controller. As <code>AuthenticationData</code> and <code>LoginResponse</code> classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:</p>
-<ul>
-<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">AuthenticationController.cs</a></li>
-<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IAuthenticationService.cs</a></li>
-</ul>
-<h3 id="Database-Seeds"><a href="#Database-Seeds" class="headerlink" title="Database Seeds"></a>Database Seeds</h3><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
-&#123;
-    seedStore.Add(UserResource, <span class="hljs-keyword">new</span> List&lt;User&gt;&#123;
-        <span class="hljs-keyword">new</span> User&#123;
-            UserName = <span class="hljs-string">"Sample User"</span>,
-            Email = <span class="hljs-string">"example@email.com"</span>,
-            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q=="</span> <span class="hljs-comment">//password123</span>
-        &#125;,
-        <span class="hljs-keyword">new</span> User&#123;
-            UserName = <span class="hljs-string">"Sample User 2"</span>,
-            Email = <span class="hljs-string">"example2@email.com"</span>,
-            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENZt+JlnUq5Ukt83M//z8Y/GlXWwYj6d260pmjQEz3Usac29eNfhmZTXHCGVOz70Hg=="</span> <span class="hljs-comment">//password123</span>
-        &#125;,
-        <span class="hljs-keyword">new</span> User&#123;
-            UserName = <span class="hljs-string">"Sample User"</span>,
-            Email = <span class="hljs-string">"example3@email.com"</span>,
-            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENffyhoiBzkUXycLNzvQOYJJGCXsXw+7U2ZL1ED+kCFCnDmL4yGGQT7Xkr4ZaNV8/A=="</span> <span class="hljs-comment">//password123</span>
-        &#125;
-    &#125;);
-&#125;</code></pre>
 
   
   
@@ -289,7 +246,7 @@
   
   <div class="footer">
     Caught a mistake or want to contribute to the documentation?
-    <a href="https://github.com/BootGen/bootgen.github.io/blob/source/src/docs/models.md" rel="noopener" target="_blank">
+    <a href="https://github.com/BootGen/bootgen.github.io/blob/source/src/docs/pre-defined-models.md" rel="noopener" target="_blank">
       Edit this on GitHub!
     </a>
   </div>
