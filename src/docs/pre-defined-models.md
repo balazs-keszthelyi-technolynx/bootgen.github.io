@@ -4,7 +4,7 @@ type: guide
 order: 3
 ---
 
-## Entity classes
+## User Entity
 
 Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined `User` model. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:
 
