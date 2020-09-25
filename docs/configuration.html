@@ -196,7 +196,7 @@
     <h1>Configuration</h1>
   
   
-    <h2 id="Creating-Resources"><a href="#Creating-Resources" class="headerlink" title="Creating Resources"></a>Creating Resources</h2><p>Besides creating a model, an other important job is, to create a configuration. This will instract the code generator how to use the created models.</p>
+    <h2 id="Creating-Resources"><a href="#Creating-Resources" class="headerlink" title="Creating Resources"></a>Creating Resources</h2><p>Besides creating a model, an other important job is, to create a configuration. This will instruct the code generator how to use the created models.</p>
 <p>If we look into the Generator/Configuration.cs file, we will see that the <code>User</code> class is added to the API as a REST resource:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Resource UserResource &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 
@@ -220,7 +220,8 @@
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">AuthenticationController.cs</a></li>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IAuthenticationService.cs</a></li>
 </ul>
-<h2 id="Database-Seeds"><a href="#Database-Seeds" class="headerlink" title="Database Seeds"></a>Database Seeds</h2><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
+<h2 id="Database-Seeds"><a href="#Database-Seeds" class="headerlink" title="Database Seeds"></a>Database Seeds</h2><p>We can also supply sample initial data for our application. The following code adds three test users:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
 &#123;
     seedStore.Add(UserResource, <span class="hljs-keyword">new</span> List&lt;User&gt;&#123;
         <span class="hljs-keyword">new</span> User&#123;
