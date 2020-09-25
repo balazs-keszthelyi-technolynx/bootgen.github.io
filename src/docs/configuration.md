@@ -6,7 +6,7 @@ order: 4
 
 ## Creating Resources
 
-Besides creating a model, an other important job is, to create a configuration. This will instract the code generator how to use the created models.
+Besides creating a model, an other important job is, to create a configuration. This will instruct the code generator how to use the created models.
 
 If we look into the Generator/Configuration.cs file, we will see that the `User` class is added to the API as a REST resource:
 
@@ -40,6 +40,8 @@ As `AuthenticationData` and `LoginResponse` classes are not referred to elsewher
  * [IAuthenticationService.cs](https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs)
 
 ## Database Seeds
+
+We can also supply sample initial data for our application. The following code adds three test users:
 
 ```csharp
 internal static void AddSeeds(SeedDataStore seedStore)
