@@ -1,0 +1,296 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta name="generator" content="Hexo 3.9.0">
+    <title>Configuration — BootGen</title>
+    <meta charset="utf-8">
+    <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/docs/configuration.html">
+    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/docs/configuration.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Configuration — BootGen">
+    <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
+    <meta property="og:image" content="https://bootgen.com//images/logo.png">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
+    <meta name="msapplication-TileImage" content="/images/icons/ms-icon-144x144.png">
+    <link rel="icon" href="/images/logo.png" type="image/png">
+
+    <meta name="msapplication-TileColor" content="#22195b">
+    <meta name="theme-color" content="#22195b">
+
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <link rel="manifest" href="/manifest.json">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://maxcdn.bootstrapcdn.com" rel="preconnect" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Roboto Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:500&text=Vue.js&display=swap" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- main page styles -->
+    <link rel="stylesheet" href="/css/page.css">
+
+    
+
+    <script>
+      window.PAGE_TYPE = "guide"
+    </script>
+
+    <!-- ga -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-46852172-1', 'bootgen.com');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- vimeo analytics -->
+    <script type="text/javascript" defer="defer" src="https://extend.vimeocdn.com/ga/72160148.js"></script>
+  </head>
+  <body class="docs">
+    <div id="mobile-bar">
+      <a class="menu-button"></a>
+      <a class="logo" href="/"></a>
+    </div>
+    <div>
+
+  <header id="header">
+    <a id="logo" href="/">
+      <img src="/images/logo.png" alt="vue logo">
+      <span>BootGen</span>
+    </a>
+    <ul id="nav">
+      
+<li>
+  <a href="/docs" class="nav-link">Documentation</a>
+</li>
+    </ul>
+  </header>
+</div>
+
+    
+      <div id="main" class="fix-sidebar">
+        
+  
+
+<div class="sidebar">
+  <div class="sidebar-inner">
+    
+    <div class="list">
+      
+        <h2>
+          
+          Guide
+        </h2>
+        <ul class="menu-root">
+  
+    
+    
+      
+        <li><h3>Getting Started</h3></li>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    <li>
+      <a href="/docs/index.html" class="sidebar-link">Introduction</a>
+    </li>
+  
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    <li>
+      <a href="/docs/installation.html" class="sidebar-link">Installation</a>
+    </li>
+  
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    <li>
+      <a href="/docs/pre-defined-models.html" class="sidebar-link">Pre-defined Models</a>
+    </li>
+  
+    
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
+    <li>
+      <a href="/docs/configuration.html" class="sidebar-link current">Configuration</a>
+    </li>
+  
+</ul>
+
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="content guide with-sidebar configuration-guide">
+  
+    
+  
+  
+    <h1>Configuration</h1>
+  
+  
+    <h2 id="Creating-Resources"><a href="#Creating-Resources" class="headerlink" title="Creating Resources"></a>Creating Resources</h2><p>Besides creating a model, an other important job is, to create a configuration. This will instract the code generator how to use the created models.</p>
+<p>If we look into the Generator/Configuration.cs file, we will see that the <code>User</code> class is added to the API as a REST resource:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Resource UserResource &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+
+<span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    UserResource = api.AddResource&lt;User&gt;(<span class="hljs-string">"User"</span>, isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
+&#125;</code></pre>
+<p>Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification is not handled buy te user resource controller. For this resource the following files are generated:</p>
+<ul>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/UsersController.cs" target="_blank" rel="noopener">UsersController.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IUsersService.cs" target="_blank" rel="noopener">IUsersService.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/UsersService.cs" target="_blank" rel="noopener">UsersService.cs</a></li>
+</ul>
+<h2 id="Creating-Controllers"><a href="#Creating-Controllers" class="headerlink" title="Creating Controllers"></a>Creating Controllers</h2><p>A little bellow the <code>Authentication</code> interface is added as a controller:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddControllers</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    api.AddController&lt;Authentication&gt;();
+&#125;</code></pre>
+<p>As <code>AuthenticationData</code> and <code>LoginResponse</code> classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:</p>
+<ul>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">AuthenticationController.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IAuthenticationService.cs</a></li>
+</ul>
+<h2 id="Database-Seeds"><a href="#Database-Seeds" class="headerlink" title="Database Seeds"></a>Database Seeds</h2><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
+&#123;
+    seedStore.Add(UserResource, <span class="hljs-keyword">new</span> List&lt;User&gt;&#123;
+        <span class="hljs-keyword">new</span> User&#123;
+            UserName = <span class="hljs-string">"Sample User"</span>,
+            Email = <span class="hljs-string">"example@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q=="</span> <span class="hljs-comment">//password123</span>
+        &#125;,
+        <span class="hljs-keyword">new</span> User&#123;
+            UserName = <span class="hljs-string">"Sample User 2"</span>,
+            Email = <span class="hljs-string">"example2@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENZt+JlnUq5Ukt83M//z8Y/GlXWwYj6d260pmjQEz3Usac29eNfhmZTXHCGVOz70Hg=="</span> <span class="hljs-comment">//password123</span>
+        &#125;,
+        <span class="hljs-keyword">new</span> User&#123;
+            UserName = <span class="hljs-string">"Sample User"</span>,
+            Email = <span class="hljs-string">"example3@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENffyhoiBzkUXycLNzvQOYJJGCXsXw+7U2ZL1ED+kCFCnDmL4yGGQT7Xkr4ZaNV8/A=="</span> <span class="hljs-comment">//password123</span>
+        &#125;
+    &#125;);
+&#125;</code></pre>
+
+  
+  
+    <div class="guide-links">
+      
+      
+        <span>← <a href="/docs/pre-defined-models.html">Pre-defined Models</a></span>
+      
+      
+      
+    </div>
+  
+  <div class="footer">
+    Caught a mistake or want to contribute to the documentation?
+    <a href="https://github.com/BootGen/bootgen.github.io/blob/source/src/docs/configuration.md" rel="noopener" target="_blank">
+      Edit this on GitHub!
+    </a>
+  </div>
+</div>
+
+      </div>
+      <script src="/js/smooth-scroll.min.js"></script>
+    
+
+    <!-- main custom script for sidebars, version selects etc. -->
+    <script src="/js/css.escape.js"></script>
+    <script src="/js/common.js"></script>
+
+    <!-- search -->
+    <link href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/search.css">
+    <script src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script>
+    [
+      '#search-query-nav',
+      '#search-query-sidebar',
+      '#search-query-menu'
+    ].forEach(function (selector) {
+      if (!document.querySelector(selector)) return
+      // search index defaults to v2
+      var match = window.location.pathname.match(/^\/(v\d+)/)
+      var version = match ? match[1] : 'v2'
+      docsearch({
+      appId: 'BH4D9OD16A',
+      apiKey: '85cc3221c9f23bfbaa4e3913dd7625ea',
+      indexName: 'vuejs',
+      inputSelector: selector,
+      algoliaOptions: { facetFilters: ["version:" + version] },
+      autocompleteOptions: { hint: false, appendTo: 'body'}
+      })
+    })
+    </script>
+  </body>
+</html>
