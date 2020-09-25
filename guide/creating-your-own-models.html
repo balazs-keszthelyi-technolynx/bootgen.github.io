@@ -4,22 +4,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head><meta name="generator" content="Hexo 3.9.0">
-    <title>BootGen</title>
+    <title>Creating Your Own Models — BootGen</title>
     <meta charset="utf-8">
     <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/menu/index.html">
-    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/menu/index.html">
+    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/guide/creating-your-own-models.html">
+    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/guide/creating-your-own-models.html">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="BootGen">
+    <meta property="og:title" content="Creating Your Own Models — BootGen">
     <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta property="og:image" content="https://bootgen.com//images/logo.png">
 
@@ -60,7 +60,7 @@
     
 
     <script>
-      window.PAGE_TYPE = "menu"
+      window.PAGE_TYPE = "guide"
     </script>
 
     <!-- ga -->
@@ -193,7 +193,7 @@
       
     
     <li>
-      <a href="/guide/creating-your-own-models.html" class="sidebar-link">Creating Your Own Models</a>
+      <a href="/guide/creating-your-own-models.html" class="sidebar-link current">Creating Your Own Models</a>
     </li>
   
 </ul>
@@ -204,108 +204,45 @@
 </div>
 
 
-<div class="content menu with-sidebar ">
+<div class="content guide with-sidebar creating-your-own-models-guide">
   
     
-      <form id="search-form">
-        <input type="text" id="search-query-menu" aria-label="Search Vue.JS site" class="search-query st-default-search-input">
-      </form>
-      <ul class="menu-root">
   
-    
-    
-      
-        <li><h3>Getting Started</h3></li>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/guide/index.html" class="sidebar-link">Introduction</a>
-    </li>
   
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/guide/installation.html" class="sidebar-link">Installation</a>
-    </li>
+    <h1>Creating Your Own Models</h1>
   
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/guide/pre-defined-models.html" class="sidebar-link">Pre-defined Models</a>
-    </li>
   
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/guide/configuration.html" class="sidebar-link">Configuration</a>
-    </li>
-  
-    
-    
-      
-      
-      
-      
-      
-      
-      
-      
-      
-    
-    <li>
-      <a href="/guide/creating-your-own-models.html" class="sidebar-link">Creating Your Own Models</a>
-    </li>
-  
-</ul>
+    <p>In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be the To-Do item itself:</p>
+<pre><code class="hljs csharp">[<span class="hljs-meta">HasTimestamps</span>]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ToDoItem</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Title &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Description &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">bool</span> IsDone &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>The <code>HasTimestamps</code> attribute on the <code>ToDoItem</code> class adds two properties to the model: a <code>Created</code> and an <code>Updated</code> timestamp.<br>If this attribute is set, then the default implementation of the <code>ToDoItemsService</code> will set these timestamps properties as needed.</p>
+<p>In the <code>Configuration.cs</code> file we add this class to the API as a resource:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
+    ToDoItemResource = api.AddResource&lt;ToDoItem&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
+&#125;</code></pre>
+<p>We have set <code>UserResource</code> as parent of <code>ToDoItemResource</code>, and so we have created a One-To-Many relationship between <code>User</code> and <code>ToDoItem</code>.<br>The REST API we will access the To-Do items on the following path: <code>/users/{userId}/to-to-items</code>.<br>Naming the parent “Owner” means that the <code>ToDoItem</code> entity class will refer to the user it belongs to as “Owner”.</p>
 
-    
   
   
-  
-    
-  
+    <div class="guide-links">
+      
+      
+        <span>← <a href="/guide/configuration.html">Configuration</a></span>
+      
+      
+      
+    </div>
   
   <div class="footer">
     Caught a mistake or want to contribute to the documentation?
-    <a href="https://github.com/BootGen/bootgen.github.io/blob/master/src/menu/index.md" rel="noopener" target="_blank">
+    <a href="https://github.com/BootGen/bootgen.github.io/blob/master/src/guide/creating-your-own-models.md" rel="noopener" target="_blank">
       Edit this on GitHub!
     </a>
   </div>
