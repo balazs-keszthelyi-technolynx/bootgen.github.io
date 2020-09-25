@@ -202,23 +202,33 @@
 
 <span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
-    UserResource = api.AddResource&lt;User&gt;(<span class="hljs-string">"User"</span>, isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
+    UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
-<p>Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification is not handled buy te user resource controller. For this resource the following files are generated:</p>
+<p>Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification are not handled buy the user resource controller.<br>The authentication parameter means, that the user have to be logged in tho query the list of users.</p>
+<p>For this resource the following files are generated:</p>
 <ul>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/UsersController.cs" target="_blank" rel="noopener">UsersController.cs</a></li>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IUsersService.cs" target="_blank" rel="noopener">IUsersService.cs</a></li>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/UsersService.cs" target="_blank" rel="noopener">UsersService.cs</a></li>
 </ul>
-<h2 id="Creating-Controllers"><a href="#Creating-Controllers" class="headerlink" title="Creating Controllers"></a>Creating Controllers</h2><p>A little bellow the <code>Authentication</code> interface is added as a controller:</p>
+<p>The business logic is implemented in the <code>UsersService</code>. A default imlementation is provided by BootGen, which is adequate for simple use cases. However, if you wish to implement your own <code>UsersService</code> you can opt-out from the generation of this file with the following:</p>
+<pre><code class="hljs csharp">UserResource.GenerateService = <span class="hljs-literal">false</span>;</code></pre>
+<h2 id="Creating-Controllers"><a href="#Creating-Controllers" class="headerlink" title="Creating Controllers"></a>Creating Controllers</h2><p>A little bellow the controllers are registered:</p>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddControllers</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     api.AddController&lt;Authentication&gt;();
+    api.AddController&lt;Registration&gt;();
+    api.AddController&lt;Profile&gt;(authenticate: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
-<p>As <code>AuthenticationData</code> and <code>LoginResponse</code> classes are not referred to elsewhere BootGen will handle them as simple DTOs. For this controller the following files are generated:</p>
+<p>Classes that we have defined in the <code>Model.cs</code> file and are only refered to (directly or indirectly) by the controller interfaces, but not the resources are handled as simple DTO classes. This means that they will not be persisted in the database, and will not get a generated identifier.</p>
+<p>For the controllers the following files are generated:</p>
 <ul>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">AuthenticationController.cs</a></li>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IAuthenticationService.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">RegistrationController.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IRegistrationService.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/AuthenticationController.cs" target="_blank" rel="noopener">ProfileController.cs</a></li>
+<li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Services/IAuthenticationService.cs" target="_blank" rel="noopener">IProfileService.cs</a></li>
 </ul>
 <h2 id="Database-Seeds"><a href="#Database-Seeds" class="headerlink" title="Database Seeds"></a>Database Seeds</h2><p>We can also supply sample initial data for our application. The following code adds three test users:</p>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
