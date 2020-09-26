@@ -212,22 +212,65 @@
     <h1>Creating Your Own Models</h1>
   
   
-    <p>In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be the To-Do item itself:</p>
+    <p>In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be a task:</p>
 <pre><code class="hljs csharp">[<span class="hljs-meta">HasTimestamps</span>]
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">ToDoItem</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Task</span>
 &#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Title &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Description &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">bool</span> IsDone &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
-<p>The <code>HasTimestamps</code> attribute on the <code>ToDoItem</code> class adds two properties to the model: a <code>Created</code> and an <code>Updated</code> timestamp.<br>If this attribute is set, then the default implementation of the <code>ToDoItemsService</code> will set these timestamps properties as needed.</p>
+<p>The <code>HasTimestamps</code> attribute on the <code>Task</code> class adds two properties to the model: a <code>Created</code> and an <code>Updated</code> timestamp.<br>If this attribute is set, then the default implementation of the <code>TasksService</code> will set these timestamps properties as needed.</p>
 <p>In the <code>Configuration.cs</code> file we add this class to the API as a resource:</p>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-    ToDoItemResource = api.AddResource&lt;ToDoItem&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
+    TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
 &#125;</code></pre>
-<p>We have set <code>UserResource</code> as parent of <code>ToDoItemResource</code>, and so we have created a One-To-Many relationship between <code>User</code> and <code>ToDoItem</code>.<br>The REST API we will access the To-Do items on the following path: <code>/users/{userId}/to-to-items</code>.<br>Naming the parent “Owner” means that the <code>ToDoItem</code> entity class will refer to the user it belongs to as “Owner”.</p>
+<p>We have set <code>UserResource</code> as parent of <code>TaskResource</code>, and so we have created a One-To-Many relationship between <code>User</code> and <code>Task</code>.<br>The REST API we will access the To-Do items on the following path: <code>/users/{userId}/tasks</code>.<br>Naming the parent “Owner” means that the <code>Task</code> entity class will refer to the user it belongs to as “Owner”.</p>
+<p>Now users have a list of tasks. Lets change the <code>User</code> model to reflect that, by adding an other property:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">ServerOnly</span>]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">Resource</span>]
+    <span class="hljs-keyword">public</span> List&lt;Task&gt; Tasks &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>The <code>Resource</code> attribute on the property means that the task list is not part of the user entity, rather it is a nested resource. If we would run the generator now, we would see that the user entity classes remain unchanged by this modification. The only reason of declaring this property is, that we can extend the database seed. Lets do that by adding some example tasks for the first example user in the <code>Configuration.cs</code> file:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddSeeds</span>(<span class="hljs-params">SeedDataStore seedStore</span>)</span>
+&#123;
+     seedStore.Add(UserResource, <span class="hljs-keyword">new</span> List&lt;User&gt; &#123;
+        <span class="hljs-keyword">new</span> User &#123;
+            UserName = <span class="hljs-string">"Sample User"</span>,
+            Email = <span class="hljs-string">"example@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q=="</span>, <span class="hljs-comment">//password123</span>
+            Tasks = <span class="hljs-keyword">new</span> List&lt;Task&gt; &#123;
+                <span class="hljs-keyword">new</span> Task &#123;
+                    Title = <span class="hljs-string">"Buy groceries"</span>,
+                    Description = <span class="hljs-string">"Bread, Milk, Eggs"</span>
+                &#125;,
+                <span class="hljs-keyword">new</span> Task &#123;
+                    Title = <span class="hljs-string">"Clean up"</span>,
+                    Description = <span class="hljs-string">"Kitchen, Bathroom"</span>
+                &#125;
+            &#125;
+        &#125;,
+        <span class="hljs-keyword">new</span> User &#123;
+            UserName = <span class="hljs-string">"Sample User 2"</span>,
+            Email = <span class="hljs-string">"example2@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENZt+JlnUq5Ukt83M//z8Y/GlXWwYj6d260pmjQEz3Usac29eNfhmZTXHCGVOz70Hg=="</span> <span class="hljs-comment">//password123</span>
+        &#125;,
+        <span class="hljs-keyword">new</span> User &#123;
+            UserName = <span class="hljs-string">"Sample User"</span>,
+            Email = <span class="hljs-string">"example3@email.com"</span>,
+            PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAENffyhoiBzkUXycLNzvQOYJJGCXsXw+7U2ZL1ED+kCFCnDmL4yGGQT7Xkr4ZaNV8/A=="</span> <span class="hljs-comment">//password123</span>
+        &#125;
+    &#125;);
+&#125;</code></pre>
+<p>Alright, lets run the generator! Use the following command in the <code>Generator</code> folder:</p>
+<pre><code class="hljs sh">dotnet run</code></pre>
 
   
   
