@@ -11,10 +11,10 @@ Entity classes are an important part of our model. As most software system has u
 ```csharp
 class User
 {
-public string UserName { get; set; }
-public string Email { get; set; }
-[ServerOnly]
-public string PasswordHash { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    [ServerOnly]
+    public string PasswordHash { get; set; }
 }
 ```
 
@@ -24,20 +24,20 @@ On the server side the generated class is found in WebProject/User.cs:
 ```csharp
 public class User
 {
-public int Id { get; set; }
-public string UserName { get; set; }
-public string Email { get; set; }
-[JsonIgnore]
-public string PasswordHash { get; set; }
+    public int Id { get; set; }
+    public string UserName { get; set; }
+    public string Email { get; set; }
+    [JsonIgnore]
+    public string PasswordHash { get; set; }
 }
 ```
 On the client side the generated TypeStript interface is found in WebProject/ClientApp/src/models/User.ts:
 
 ```typescript
 export interface User {
-id: number;
-userName: string;
-email: string;
+    id: number;
+    userName: string;
+    email: string;
 }
 ```
 
@@ -55,14 +55,14 @@ The other important part of the model are the controllers. Controllers are defin
 ```csharp
 class AuthenticationData
 {
-public string Email { get; set; }
-public string Password { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }
 
 class LoginResponse
 {
-public string Jwt { get; set; }
-public User User { get; set; }
+    public string Jwt { get; set; }
+    public User User { get; set; }
 }
 
 interface Authentication
@@ -77,13 +77,13 @@ Because `AuthenticationData` and `LoginResponse` are simple data transfer object
 
 ```typescript
 export interface AuthenticationData {
-email: string;
-password: string;
+    email: string;
+    password: string;
 }
 
 export interface LoginResponse {
-jwt: string;
-user: User;
+    jwt: string;
+    user: User;
 }
 ```
 
