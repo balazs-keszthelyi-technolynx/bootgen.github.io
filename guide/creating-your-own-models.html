@@ -296,6 +296,7 @@ dotnet ef database update</code></pre>
 <pre><code class="hljs javascript">loginResponse = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'login'</span>, &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">'example@email.com'</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">'password123'</span>&#125;)
 $vm.$store.commit(<span class="hljs-string">'setJwt'</span>, loginResponse.jwt)
 <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTasks'</span>, loginResponse.user)
+<span class="hljs-keyword">await</span> $vm.$store.state.tasks
 <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre>
 
   
