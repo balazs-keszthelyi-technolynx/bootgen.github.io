@@ -271,6 +271,27 @@
 &#125;</code></pre>
 <p>Alright, lets run the generator! Use the following command in the <code>Generator</code> folder:</p>
 <pre><code class="hljs sh">dotnet run</code></pre>
+<p>Check the changes in git! You will see the following:</p>
+<ul>
+<li>A task entity is created both on the client and the server side</li>
+<li>A nested controller is created</li>
+<li>A service and a sevice interface is created</li>
+<li>The service is registered to the dependency injection container</li>
+<li>The <code>DbContext</code> was extended with a tasks <code>DBSet</code>, and the database seed was extended with our example tasks.</li>
+<li>The REST API specification is extended in the <code>restapi.yml</code> file</li>
+<li>The Vuex store is extended with the CRUD operations for the task entity</li>
+</ul>
+<p>To run the code we first need to initialize the database. If you have already done that, delete the <code>Migrations</code> folder and the <code>web_project.db</code> SQLite database. Navigate to the <code>WebProject</code> folder, then run the following commands:</p>
+<pre><code class="hljs sh">rm -rf Migrations
+rm web_project.db
+dotnet ef migrations add InitialCreate
+dotnet ef database update</code></pre>
+<p>Starting up your project you probably want to do this offen. You can use the <code>resetdb.sh</code> script (or <code>resetdb.bat</code> on Windows) as a shortcut.</p>
+<p>Start the server by running the following command:</p>
+<pre><code class="hljs sh">dotnet run</code></pre>
+<p>In a separate terminal window start the client, by running the following command in the <code>WebProject/ClietApp</code> folder:</p>
+<pre><code class="hljs sh">npm run serve</code></pre>
+<p>Navigate your browser to <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>.</p>
 
   
   
