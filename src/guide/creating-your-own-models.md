@@ -98,6 +98,8 @@ Check the changes in git! You will see the following:
  * The REST API specification is extended in the `restapi.yml` file
  * The Vuex store is extended with the CRUD operations for the task entity
  
+ ## Playing With The Application From The Browser Console
+ 
 To run the code we first need to initialize the database. If you have already done that, delete the `Migrations` folder and the `web_project.db` SQLite database. Navigate to the `WebProject` folder, then run the following commands:
 
 ```sh
@@ -120,3 +122,10 @@ npm run serve
 ```
 
 Navigate your browser to http://localhost:8080.
+
+```javascript
+loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
+$vm.$store.commit('setJwt', loginResponse.jwt)
+await $vm.$store.dispatch('getTasks', loginResponse.user)
+await $vm.$store.dispatch('addTask', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
+```
