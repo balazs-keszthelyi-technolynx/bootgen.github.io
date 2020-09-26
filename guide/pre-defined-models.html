@@ -215,39 +215,39 @@
     <h2 id="User-Entity"><a href="#User-Entity" class="headerlink" title="User Entity"></a>User Entity</h2><p>Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined <code>User</code> model. In the Generator/Models.cs file you will find the pre-defined models, the first being the User model:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
 &#123;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-[<span class="hljs-meta">ServerOnly</span>]
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">ServerOnly</span>]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
 <p>Based on this model entity classes are generated on both server and client side.<br>On the server side the generated class is found in WebProject/User.cs:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
 &#123;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-[<span class="hljs-meta">JsonIgnore</span>]
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> Id &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">JsonIgnore</span>]
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
 <p>On the client side the generated TypeStript interface is found in WebProject/ClientApp/src/models/User.ts:</p>
 <pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> User &#123;
-id: <span class="hljs-built_in">number</span>;
-userName: <span class="hljs-built_in">string</span>;
-email: <span class="hljs-built_in">string</span>;
+    id: <span class="hljs-built_in">number</span>;
+    userName: <span class="hljs-built_in">string</span>;
+    email: <span class="hljs-built_in">string</span>;
 &#125;</code></pre>
 <p>You must have noticed the <code>ServerOnly</code> attribute on the <code>PasswordHash</code> property. The effect of this property is that the password hash is missing on the<br>client side entity. There is also a <code>JsonIgnore</code> attribute on this property on the server side, preventing this attribute to be serialized into JSON.</p>
 <p>You also might notice that the generated entity classes have an integer identifier. This identifier is added automatically, because the user entity is persisted into the database. We will talk later about how BootGen knows that this class needs to be persisted.</p>
 <h2 id="Controllers"><a href="#Controllers" class="headerlink" title="Controllers"></a>Controllers</h2><p>The other important part of the model are the controllers. Controllers are defined with C# interfaces. There are some pre-defined controllers that are beneficary for most applications.</p>
 <h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticationData</span>
 &#123;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Password &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Password &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;
 
 <span class="hljs-keyword">class</span> <span class="hljs-title">LoginResponse</span>
 &#123;
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Jwt &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
-<span class="hljs-keyword">public</span> User User &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Jwt &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> User User &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;
 
 <span class="hljs-keyword">interface</span> <span class="hljs-title">Authentication</span>
@@ -258,13 +258,13 @@ email: <span class="hljs-built_in">string</span>;
 <p>The <code>Post</code> attribute on the login method sets the HTTP verb for the controller methods. Other useable attributes are <code>Get</code>, <code>Put</code>, <code>Patch</code> and <code>Delete</code>.</p>
 <p>Because <code>AuthenticationData</code> and <code>LoginResponse</code> are simple data transfer objects (DTOs) that are not persisted in the database, their generated server side counterparts are identical to them. There is no big surprise on the client side either:</p>
 <pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> AuthenticationData &#123;
-email: <span class="hljs-built_in">string</span>;
-password: <span class="hljs-built_in">string</span>;
+    email: <span class="hljs-built_in">string</span>;
+    password: <span class="hljs-built_in">string</span>;
 &#125;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> LoginResponse &#123;
-jwt: <span class="hljs-built_in">string</span>;
-user: User;
+    jwt: <span class="hljs-built_in">string</span>;
+    user: User;
 &#125;</code></pre>
 <h3 id="Registration"><a href="#Registration" class="headerlink" title="Registration"></a>Registration</h3><pre><code class="hljs csharp"><span class="hljs-keyword">class</span> <span class="hljs-title">RegistrationData</span>
 &#123;
