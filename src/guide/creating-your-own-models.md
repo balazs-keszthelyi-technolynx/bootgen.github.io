@@ -127,5 +127,6 @@ Navigate your browser to http://localhost:8080.
 loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
 $vm.$store.commit('setJwt', loginResponse.jwt)
 await $vm.$store.dispatch('getTasks', loginResponse.user)
+await $vm.$store.state.tasks
 await $vm.$store.dispatch('addTask', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
 ```
