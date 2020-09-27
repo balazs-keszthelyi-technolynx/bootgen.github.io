@@ -224,3 +224,40 @@ And finally delete it:
 ```json
 $vm.$store.dispatch('deleteTask', {user: loginResponse.user, task: newTask})
 ```
+
+## The Tags Entity
+
+We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be "important" or "urgent" or "fun"? What if we would also like to let users to define what tags they would like to use? For this reason, let's create a `Tag` class:
+
+```csharp
+public class Tag
+{
+    public string Name { get; set; }
+    public string Color { get; set; }
+}
+```
+
+As we did previously with the User clas, add the tags list to the `Task` class:
+
+```csharp
+[HasTimestamps]
+public class Task
+{
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public bool IsDone { get; set; }
+    [Resource]
+    List<Tag> Tags { get; set; }
+}
+```
+
+The relation of the `Task` and the `Tag` class is Many-To-Many. This is specified when registering the resource:
+
+```csharp
+internal static void AddResources(BootGenApi api)
+{
+    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
+    TaskResource = api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
+    api.AddResource<Tag>(authenticate: true, parent: TaskResource, manyToMany: true);
+}
+```
