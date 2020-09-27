@@ -347,7 +347,7 @@ dotnet ef database update</code></pre>
   <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
   <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
 &#125;</code></pre></p>
-<p>And finally delete it:<br><pre><code class="hljs json">$vm.$store.dispatch('deleteTask', &#123;user: loginResponse.user, task: newTask&#125;)</code></pre></p>
+<p>And finally delete it:<br><pre><code class="hljs javascripe">$vm.$store.dispatch(&apos;deleteTask&apos;, &#123;user: loginResponse.user, task: newTask&#125;)</code></pre></p>
 <h2 id="The-Tags-Entity"><a href="#The-Tags-Entity" class="headerlink" title="The Tags Entity"></a>The Tags Entity</h2><p>We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be “important” or “urgent” or “fun”? What if we would also like to let users to define what tags they would like to use? For this reason, let’s create a <code>Tag</code> class:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tag</span>
 &#123;
