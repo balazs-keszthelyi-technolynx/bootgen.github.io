@@ -100,9 +100,10 @@ Check the changes in git! You will see the following:
  * The REST API specification is extended in the `restapi.yml` file
  * The Vuex store is extended with the CRUD operations for the task entity
  
- ## Playing With The Application From The Browser Console
+## Playing With The Application From The Browser Console
  
 <p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/) </p>
+
 ### Running the application 
 To run the code we first need to initialize the database. If you have already done that, delete the `Migrations` folder and the `web_project.db` SQLite database. Navigate to the `WebProject` folder, then run the following commands:
 
