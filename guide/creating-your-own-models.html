@@ -212,7 +212,7 @@
     <h1>Creating Your Own Models</h1>
   
   
-    <p>In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be a task:</p>
+    <h2 id="The-Task-Entity"><a href="#The-Task-Entity" class="headerlink" title="The Task Entity"></a>The Task Entity</h2><p>In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be a task:</p>
 <pre><code class="hljs csharp">[<span class="hljs-meta">HasTimestamps</span>]
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Task</span>
 &#123;
@@ -282,6 +282,8 @@
 <li><p>The Vuex store is extended with the CRUD operations for the task entity</p>
 <h2 id="Playing-With-The-Application-From-The-Browser-Console"><a href="#Playing-With-The-Application-From-The-Browser-Console" class="headerlink" title="Playing With The Application From The Browser Console"></a>Playing With The Application From The Browser Console</h2></li>
 </ul>
+<p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for <a href="https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en" target="_blank" rel="noopener">Chrome</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/" target="_blank" rel="noopener">Firefox</a> </p>
+
 <p>To run the code we first need to initialize the database. If you have already done that, delete the <code>Migrations</code> folder and the <code>web_project.db</code> SQLite database. Navigate to the <code>WebProject</code> folder, then run the following commands:</p>
 <pre><code class="hljs sh">rm -rf Migrations
 rm web_project.db
@@ -292,12 +294,59 @@ dotnet ef database update</code></pre>
 <pre><code class="hljs sh">dotnet run</code></pre>
 <p>In a separate terminal window start the client, by running the following command in the <code>WebProject/ClietApp</code> folder:</p>
 <pre><code class="hljs sh">npm run serve</code></pre>
-<p>Navigate your browser to <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>.</p>
-<pre><code class="hljs javascript">loginResponse = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'login'</span>, &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">'example@email.com'</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">'password123'</span>&#125;)
-$vm.$store.commit(<span class="hljs-string">'setJwt'</span>, loginResponse.jwt)
-<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTasks'</span>, loginResponse.user)
-<span class="hljs-keyword">await</span> $vm.$store.state.tasks
-<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre>
+<p>Navigate your browser to <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a>, where you should see a login screen. Open the developer tools. (This can usually be done by hitting F12 or Ctrl + Shift + I or right-clicking anywhere on the and selecting “Inspect”.)</p>
+<p>Select the “Vue” tab and click on the “Root” component. This will create a <code>$vm</code> variable which allows us to interact with our application from the console.<br>Select the “Console” tab, and send a login request with the followin line of JavaScript code:</p>
+<pre><code class="hljs javascript">loginResponse = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'login'</span>, &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">'example@email.com'</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">'password123'</span>&#125;)</code></pre>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"jwt"</span>: <span class="hljs-string">"eyJhbGciOiJIU ... "</span>,
+  <span class="hljs-attr">"user"</span>: &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"userName"</span>: <span class="hljs-string">"Sample User"</span>,
+    <span class="hljs-attr">"email"</span>: <span class="hljs-string">"example@email.com"</span>
+  &#125;
+&#125;</code></pre></p>
+<p>If the application is working correctly, then an object must have appeared on the console with a <code>user</code> and the <code>jwt</code> property. The value of the <code>jwt</code> (JSON Web Token) property is ou session token. Let’s store this token to be used in the following requests:<br><pre><code class="hljs javascript">$vm.$store.commit(<span class="hljs-string">'setJwt'</span>, loginResponse.jwt)</code></pre></p>
+<p>Now that we are successfully logged in, we might query our tasks:<br><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTasks'</span>, loginResponse.user)</code></pre></p>
+<p>output:<br><pre><code class="hljs json">[
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Buy groceries"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Bread, Milk, Eggs"</span>,
+    <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-26T17:41:00"</span>,
+    <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-26T17:41:00"</span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Clean up"</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Kitchen, Bathroom"</span>,
+    <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-26T17:41:00"</span>,
+    <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-26T17:41:00"</span>
+  &#125;
+]</code></pre></p>
+<p>All queried resources are saved in the Vuex store, <code>$vm.$store.state.tasks</code> will contain all previously queried tasks. Calling<br><pre><code class="hljs javascript">$vm.$store.state.tasks.get(loginResponse.user.id)</code></pre></p>
+<p>will return the same list of tasks as abbow.</p>
+<p>Let’s add a task:<br><pre><code class="hljs javascript">newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre></p>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"bootgen.com"</span>,
+  <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
+  <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445762+02:00"</span>
+&#125;</code></pre></p>
+<p>Let’s try an update:</p>
+<pre><code class="hljs javascript">newTask.description = <span class="hljs-string">"bootgen.com/guide"</span>
+<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'updateTask'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: newTask&#125;)</code></pre>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"bootgen.com/guide"</span>,
+  <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
+  <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
+&#125;</code></pre></p>
 
   
   
