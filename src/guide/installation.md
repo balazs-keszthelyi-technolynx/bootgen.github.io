@@ -10,6 +10,7 @@ To use this tool make sure that you have the following installed:
  * An up-to-date version of Node.js https://nodejs.org/
  * Entity Framework Core command line interface. You can install this with the following command: <br>
    `dotnet tool install --global dotnet-ef`
+ * **optionally** Vue.js devtools for [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
 
 ## Get BootGen From GitHub
 
