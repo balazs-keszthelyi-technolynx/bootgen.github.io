@@ -4,6 +4,8 @@ type: guide
 order: 5
 ---
 
+## The Task Entity
+
 In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be a task:
 
 ```csharp
@@ -100,6 +102,8 @@ Check the changes in git! You will see the following:
  
  ## Playing With The Application From The Browser Console
  
+<p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/) </p>
+ 
 To run the code we first need to initialize the database. If you have already done that, delete the `Migrations` folder and the `web_project.db` SQLite database. Navigate to the `WebProject` folder, then run the following commands:
 
 ```sh
@@ -121,12 +125,91 @@ In a separate terminal window start the client, by running the following command
 npm run serve
 ```
 
-Navigate your browser to http://localhost:8080.
+Navigate your browser to http://localhost:8080, where you should see a login screen. Open the developer tools. (This can usually be done by hitting F12 or Ctrl + Shift + I or right-clicking anywhere on the and selecting "Inspect".)
+
+Select the "Vue" tab and click on the "Root" component. This will create a `$vm` variable which allows us to interact with our application from the console.
+Select the "Console" tab, and send a login request with the followin line of JavaScript code:
 
 ```javascript
 loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
+```
+output:
+```json
+{
+  "jwt": "eyJhbGciOiJIU ... ",
+  "user": {
+    "id": 1,
+    "userName": "Sample User",
+    "email": "example@email.com"
+  }
+}
+```
+If the application is working correctly, then an object must have appeared on the console with a `user` and the `jwt` property. The value of the `jwt` (JSON Web Token) property is ou session token. Let's store this token to be used in the following requests:
+```javascript
 $vm.$store.commit('setJwt', loginResponse.jwt)
+```
+Now that we are successfully logged in, we might query our tasks:
+```javascript
 await $vm.$store.dispatch('getTasks', loginResponse.user)
-await $vm.$store.state.tasks
-await $vm.$store.dispatch('addTask', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
+```
+
+output:
+```json
+[
+  {
+    "id": 1,
+    "title": "Buy groceries",
+    "description": "Bread, Milk, Eggs",
+    "isDone": false,
+    "created": "2020-09-26T17:41:00",
+    "updated": "2020-09-26T17:41:00"
+  },
+  {
+    "id": 2,
+    "title": "Clean up",
+    "description": "Kitchen, Bathroom",
+    "isDone": false,
+    "created": "2020-09-26T17:41:00",
+    "updated": "2020-09-26T17:41:00"
+  }
+]
+```
+
+All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will contain all previously queried tasks. Calling
+```javascript
+$vm.$store.state.tasks.get(loginResponse.user.id)
+```
+will return the same list of tasks as abbow.
+
+Let's add a task:
+```javascript
+newTask = await $vm.$store.dispatch('addTask', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
+```
+output:
+```json
+{
+  "id": 3,
+  "title": "Learn BootGen",
+  "description": "bootgen.com",
+  "isDone": false,
+  "created": "2020-09-27T09:59:45.8445397+02:00",
+  "updated": "2020-09-27T09:59:45.8445762+02:00"
+}
+```
+Let's try an update:
+
+```javascript
+newTask.description = "bootgen.com/guide"
+await $vm.$store.dispatch('updateTask', {user: loginResponse.user, task: newTask})
+```
+output:
+```json
+{
+  "id": 3,
+  "title": "Learn BootGen",
+  "description": "bootgen.com/guide",
+  "isDone": false,
+  "created": "2020-09-27T09:59:45.8445397+02:00",
+  "updated": "2020-09-27T10:04:28.1653196+02:00"
+}
 ```
