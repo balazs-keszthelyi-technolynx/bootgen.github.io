@@ -348,6 +348,29 @@ dotnet ef database update</code></pre>
   <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
 &#125;</code></pre></p>
 <p>And finally delete it:<br><pre><code class="hljs json">$vm.$store.dispatch('deleteTask', &#123;user: loginResponse.user, task: newTask&#125;)</code></pre></p>
+<h2 id="The-Tags-Entity"><a href="#The-Tags-Entity" class="headerlink" title="The Tags Entity"></a>The Tags Entity</h2><p>We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be “important” or “urgent” or “fun”? What if we would also like to let users to define what tags they would like to use? For this reason, let’s create a <code>Tag</code> class:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tag</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Name &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Color &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>As we did previously with the User clas, add the tags list to the <code>Task</code> class:</p>
+<pre><code class="hljs csharp">[<span class="hljs-meta">HasTimestamps</span>]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Task</span>
+&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Title &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Description &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">bool</span> IsDone &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    [<span class="hljs-meta">Resource</span>]
+    List&lt;Tag&gt; Tags &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>The relation of the <code>Task</code> and the <code>Tag</code> class is Many-To-Many. This is specified when registering the resource:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
+&#123;
+    UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
+    TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
+    api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>, parent: TaskResource, manyToMany: <span class="hljs-literal">true</span>);
+&#125;</code></pre>
 
   
   
