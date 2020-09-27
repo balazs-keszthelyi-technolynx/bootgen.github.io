@@ -221,7 +221,7 @@ output:
 }
 ```
 And finally delete it:
-```json
+```javascripe
 $vm.$store.dispatch('deleteTask', {user: loginResponse.user, task: newTask})
 ```
 
