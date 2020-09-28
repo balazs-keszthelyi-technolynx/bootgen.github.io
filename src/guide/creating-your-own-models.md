@@ -155,9 +155,16 @@ $vm.$store.commit('setJwt', loginResponse.jwt)
 
 ### CRUD operations on tasks
 
+Save the logged-in user into a variabe:
+
+```javascript
+user = loginResponse.user
+```
+
+
 Now that we are successfully logged in, we might query our tasks:
 ```javascript
-await $vm.$store.dispatch('getTasksOfUser', loginResponse.user)
+await $vm.$store.dispatch('getTasksOfUser', user)
 ```
 
 output:
@@ -188,9 +195,9 @@ $vm.$store.state.tasks.get(loginResponse.user.id)
 ```
 will return the same list of tasks as abbow.
 
-Let's add a task:
+#### Add A Task
 ```javascript
-newTask = await $vm.$store.dispatch('addTaskToUser', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
+newTask = await $vm.$store.dispatch('addTaskToUser', {user: user, task: {title: "Learn BootGen", description: "bootgen.com"}})
 ```
 output:
 ```json
@@ -203,11 +210,11 @@ output:
   "updated": "2020-09-27T09:59:45.8445762+02:00"
 }
 ```
-Let's try an update:
+#### Update
 
 ```javascript
 newTask.description = "bootgen.com/guide"
-await $vm.$store.dispatch('updateTaskOfUser', {user: loginResponse.user, task: newTask})
+await $vm.$store.dispatch('updateTaskOfUser', {user: user, task: newTask})
 ```
 output:
 ```json
@@ -220,9 +227,9 @@ output:
   "updated": "2020-09-27T10:04:28.1653196+02:00"
 }
 ```
-And finally delete it:
-```javascripe
-$vm.$store.dispatch('deleteTaskOfUser', {user: loginResponse.user, task: newTask})
+#### Delete
+```javascript
+$vm.$store.dispatch('deleteTaskOfUser', {user: user, task: newTask})
 ```
 
 ### Removing redundancy
@@ -238,6 +245,45 @@ internal static void AddResources(BootGenApi api)
 }
 ```
 
+Run the generator, reset the database (with `resetdb.sh` or `resetdb.bat`) and restart the application. Now you can try the newly introduced CRUD operations:
+
+#### Add A Task
+```javascript
+await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
+```
+output:
+```json
+{
+  "id": 3,
+  "title": "Learn BootGen",
+  "description": "bootgen.com",
+  "isDone": false,
+  "created": "2020-09-27T09:59:45.8445397+02:00",
+  "updated": "2020-09-27T09:59:45.8445762+02:00"
+}
+```
+
+#### Update
+
+```javascript
+newTask.description = "bootgen.com/guide"
+await $vm.$store.dispatch('updateTask', newTask)
+```
+output:
+```json
+{
+  "id": 3,
+  "title": "Learn BootGen",
+  "description": "bootgen.com/guide",
+  "isDone": false,
+  "created": "2020-09-27T09:59:45.8445397+02:00",
+  "updated": "2020-09-27T10:04:28.1653196+02:00"
+}
+```
+#### Delete
+```javascript
+$vm.$store.dispatch('deleteTask', newTask)
+```
 ## The Tags Entity
 
 We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be "important" or "urgent" or "fun"? What if we would also like to let users to define what tags they would like to use? For this reason, let's create a `Tag` class:
