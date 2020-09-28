@@ -235,7 +235,22 @@
   <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Message &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
 <p>You may also specify the name (and plural name) of the resource to be different than the class name:</p>
-<pre><code class="hljs csharp">api.AddResource&lt;LogEntry&gt;(name: <span class="hljs-string">"Entry"</span>, pluralName: <span class="hljs-string">"Entries"</span>, parent: LogResource, authenticate: <span class="hljs-literal">true</span>);</code></pre>
+<pre><code class="hljs csharp"><span class="hljs-keyword">var</span> logResource = api.AddResource&lt;Log&gt;(authenticate: <span class="hljs-literal">true</span>);
+<span class="hljs-keyword">var</span> logEntryResource = api.AddResource&lt;LogEntry&gt;(name: <span class="hljs-string">"Entry"</span>, pluralName: <span class="hljs-string">"Entries"</span>, parent: LogResource, authenticate: <span class="hljs-literal">true</span>);</code></pre>
+<p>In this case setting the resource name will result in the following:</p>
+<ul>
+<li>The http path will be <code>logs/{id}/entries</code> instead of <code>logs/{id}/log-entries</code></li>
+<li>The controller will be called <code>LogsEntriesController</code> instead of <code>LogsLogEntriesController</code></li>
+<li><p>The service will be called <code>LogsEntriesService</code> instead of <code>LogsLogEntriesService</code></p>
+<h2 id="Custom-namesfor-controllers-and-services"><a href="#Custom-namesfor-controllers-and-services" class="headerlink" title="Custom namesfor controllers and services"></a>Custom namesfor controllers and services</h2></li>
+</ul>
+<p>If you do not like the naming convention that BootGen uses for controllers and services, or if they are against the naming policy of your company, you can set the names explicitly:</p>
+<pre><code class="hljs csharp">logEntryResource.GenerationSettings.ServiceName = <span class="hljs-string">"LogEntriesDataService"</span>;
+logEntryResource.GenerationSettings.ControllerName = <span class="hljs-string">"LogEntriesController"</span>;</code></pre>
+<h2 id="Opting-out-from-generating-certain-files"><a href="#Opting-out-from-generating-certain-files" class="headerlink" title="Opting out from generating certain files"></a>Opting out from generating certain files</h2><p>The generation of the controller, service and service interface is optional. You can opt-out form generating some of these file by setting any of the following properties false:</p>
+<pre><code class="hljs csharp">logEntryResource.GenerationSettings.GenerateController = <span class="hljs-literal">false</span>;
+logEntryResource.GenerationSettings.GenerateService = <span class="hljs-literal">false</span>;
+logEntryResource.GenerationSettings.GenerateServiceInterface = <span class="hljs-literal">false</span>;</code></pre>
 
   
   
