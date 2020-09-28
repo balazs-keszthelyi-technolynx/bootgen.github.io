@@ -332,6 +332,29 @@ internal static void AddResources(BootGenApi api)
 
 We have registered `Tag` as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.
 
+Add some sample tags to the database seed, by directly adding it to the tasks of the first user:
+
+```csharp
+new User
+{
+    UserName = "Sample User",
+    Email = "example@email.com",
+    PasswordHash = "AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q==", //password123
+    Tasks = new List<Task> {
+         new Task {
+             Title = "Buy groceries",
+             Description = "Bread, Milk, Eggs",
+             Tags = new List<Tag> { new Tag { Name = "Urgent", Color="#ff0000" } }
+         },
+         new Task {
+             Title = "Clean up",
+             Description = "Kitchen, Bathroom",
+             Tags = new List<Tag> { new Tag { Name = "Important", Color="#ff8800" } }
+         }
+     }
+}
+```
+
 
 Run the generator, reset the database and restart the application.
 
