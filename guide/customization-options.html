@@ -4,22 +4,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head><meta name="generator" content="Hexo 3.9.0">
-    <title>Introduction — BootGen</title>
+    <title>Customization Options — BootGen</title>
     <meta charset="utf-8">
     <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/guide/index.html">
-    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/guide/index.html">
+    <link rel="alternate" hreflang="x-default" href="https://vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="zh" href="https://cn.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="ja" href="https://jp.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="ru" href="https://ru.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="ko" href="https://kr.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="pt-BR" href="https://br.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="fr" href="https://fr.vuejs.org/guide/customization-options.html">
+    <link rel="alternate" hreflang="es" href="https://es.vuejs.org/guide/customization-options.html">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Introduction — BootGen">
+    <meta property="og:title" content="Customization Options — BootGen">
     <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
     <meta property="og:image" content="https://bootgen.com//images/logo.png">
 
@@ -129,7 +129,7 @@
       
     
     <li>
-      <a href="/guide/index.html" class="sidebar-link current">Introduction</a>
+      <a href="/guide/index.html" class="sidebar-link">Introduction</a>
     </li>
   
     
@@ -209,7 +209,7 @@
       
     
     <li>
-      <a href="/guide/customization-options.html" class="sidebar-link">Customization Options</a>
+      <a href="/guide/customization-options.html" class="sidebar-link current">Customization Options</a>
     </li>
   
 </ul>
@@ -220,33 +220,37 @@
 </div>
 
 
-<div class="content guide with-sidebar index-guide">
+<div class="content guide with-sidebar customization-options-guide">
   
     
   
   
-    <h1>Introduction</h1>
+    <h1>Customization Options</h1>
   
   
-    <h2 id="What-is-BootGen"><a href="#What-is-BootGen" class="headerlink" title="What is BootGen?"></a>What is BootGen?</h2><p>BootGen is a model based, template driven application code generator for ASP.Net Core and Vue.js.</p>
-<p><strong>Model based</strong> means that to start working on your project, first you have to create a model of your entities, resources and operations. Unlike other code generators, it is not necessary to learn separate modelling language, because BootGen models are plain C# classes and interfaces.</p>
-<p><strong>Template driven</strong> means that each piece of generated code (for example entity classes and controllers), is described by a <a href="https://github.com/lunet-io/scriban" target="_blank" rel="noopener">Scriban</a> template. Templates are customizable, this way you can make the generated code look consistent with the code you write by hand.</p>
-<h2 id="Why-Use-A-Code-Generator"><a href="#Why-Use-A-Code-Generator" class="headerlink" title="Why Use A Code Generator?"></a>Why Use A Code Generator?</h2><p>In every software project there are interesting parts that need programmer creativity, and there are boring parts that do not. We usually have to develop the boring parts, before we can work on the interesting parts. The boring parts are repetitive, tedious and error prone. A significant amount of development time is spent on creating these parts, and also a significant amount of time is spent on finding bugs in these parts. Would not it be nice to start your next project with the boring parts already done?</p>
+    <h2 id="Irregular-Plural-Nouns"><a href="#Irregular-Plural-Nouns" class="headerlink" title="Irregular Plural Nouns"></a>Irregular Plural Nouns</h2><p>Sometimes we need to use <a href="https://www.grammarly.com/blog/irregular-plural-nouns/" target="_blank" rel="noopener">irregular plural nouns</a> as class name. You might for example have a class named <code>LogEntry</code>. You can specify the plural form of the name the following way:</p>
+<pre><code class="hljs csharp">[<span class="hljs-meta">PluralName(<span class="hljs-meta-string">"LogEntries"</span>)</span>]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LogEntry</span> &#123;
+  <span class="hljs-keyword">public</span> DateTime Timestamp &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Message &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+&#125;</code></pre>
+<p>You may also specify the name (and plural name) of the resource to be different than the class name:</p>
+<pre><code class="hljs csharp">api.AddResource&lt;LogEntry&gt;(name: <span class="hljs-string">"Entry"</span>, pluralName: <span class="hljs-string">"Entries"</span>, parent: LogResource, authenticate: <span class="hljs-literal">true</span>);</code></pre>
 
   
   
     <div class="guide-links">
       
       
+        <span>← <a href="/guide/creating-your-own-models.html">Creating Your Own Models</a></span>
       
       
-        <span style="float: right;"><a href="/guide/installation.html">Installation</a> →</span>
       
     </div>
   
   <div class="footer">
     Caught a mistake or want to contribute to the documentation?
-    <a href="https://github.com/BootGen/bootgen.github.io/blob/master/src/guide/index.md" rel="noopener" target="_blank">
+    <a href="https://github.com/BootGen/bootgen.github.io/blob/master/src/guide/customization-options.md" rel="noopener" target="_blank">
       Edit this on GitHub!
     </a>
   </div>
