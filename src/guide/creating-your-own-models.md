@@ -368,23 +368,16 @@ output:
 #### Create a new tag
 
 ```javascript
-await $vm.$store.dispatch('getTags')
+fun = await $vm.$store.dispatch('addTag', { name: 'Fun', color: '#00ff00' })
 ```
 
 output:
 ```json
-[
-  {
-    "id": 1,
-    "name": "Urgent",
-    "color": "#ff0000"
-  },
-  {
-    "id": 2,
-    "name": "Important",
-    "color": "#ff8800"
-  }
-]
+{
+  "id": 3,
+  "name": "Fun",
+  "color": "#00ff00"
+}
 ```
 
 #### Assign the new Tag to a task
