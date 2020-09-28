@@ -27,7 +27,7 @@ In the `Configuration.cs` file we add this class to the API as a resource:
 internal static void AddResources(BootGenApi api)
 {
     UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    TaskResource = api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
+    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
 }
 ```
 
@@ -240,8 +240,8 @@ What we did so far works fine, however, there is some redundancy when calling th
 internal static void AddResources(BootGenApi api)
 {
     UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    TaskResource = api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
-    RootTaskResource = api.AddResource<Task>(authenticate: true);
+    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
+    api.AddResource<Task>(authenticate: true);
 }
 ```
 
@@ -284,6 +284,13 @@ output:
 ```javascript
 $vm.$store.dispatch('deleteTask', newTask)
 ```
+
+We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:
+
+```csharp
+api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", readonly: true);
+```
+
 ## The Tags Entity
 
 We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be "important" or "urgent" or "fun"? What if we would also like to let users to define what tags they would like to use? For this reason, let's create a `Tag` class:
@@ -306,7 +313,7 @@ public class Task
     public string Description { get; set; }
     public bool IsDone { get; set; }
     [Resource]
-    List<Tag> Tags { get; set; }
+    public List<Tag> Tags { get; set; }
 }
 ```
 
@@ -316,7 +323,72 @@ The relation of the `Task` and the `Tag` class is Many-To-Many. This is specifie
 internal static void AddResources(BootGenApi api)
 {
     UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    TaskResource = api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
-    api.AddResource<Tag>(authenticate: true, parent: TaskResource, manyToMany: true);
+    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", readonly: true);
+    var taskResource = api.AddResource<Task>(authenticate: true);
+    api.AddResource<Tag>(authenticate: true);
+    api.AddResource<Tag>(authenticate: true, parent: taskResource, manyToMany: true);
 }
+```
+
+We have registered `Tag` as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.
+
+
+Run the generator, reset the database and restart the application.
+
+Run the following commands:
+
+```javascript
+loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
+$vm.$store.commit('setJwt', loginResponse.jwt)
+user = loginResponse.user
+newTask = await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
+```
+#### Get the list of tags
+
+```javascript
+await $vm.$store.dispatch('getTags')
+```
+
+output:
+```json
+[
+  {
+    "id": 1,
+    "name": "Urgent",
+    "color": "#ff0000"
+  },
+  {
+    "id": 2,
+    "name": "Important",
+    "color": "#ff8800"
+  }
+]
+```
+
+#### Create a new tag
+
+```javascript
+await $vm.$store.dispatch('getTags')
+```
+
+output:
+```json
+[
+  {
+    "id": 1,
+    "name": "Urgent",
+    "color": "#ff0000"
+  },
+  {
+    "id": 2,
+    "name": "Important",
+    "color": "#ff8800"
+  }
+]
+```
+
+#### Assign the new Tag to a task
+
+```javascript
+await $vm.$store.dispatch('addTagToTask', { task: newTask, tag: fun })
 ```
