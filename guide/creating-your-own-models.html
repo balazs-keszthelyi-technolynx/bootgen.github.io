@@ -306,7 +306,9 @@ dotnet ef database update</code></pre>
   &#125;
 &#125;</code></pre></p>
 <p>If the application is working correctly, then an object must have appeared on the console with a <code>user</code> and the <code>jwt</code> property. The value of the <code>jwt</code> (JSON Web Token) property is ou session token. Let’s store this token to be used in the following requests:<br><pre><code class="hljs javascript">$vm.$store.commit(<span class="hljs-string">'setJwt'</span>, loginResponse.jwt)</code></pre></p>
-<h3 id="CRUD-operations-on-tasks"><a href="#CRUD-operations-on-tasks" class="headerlink" title="CRUD operations on tasks"></a>CRUD operations on tasks</h3><p>Now that we are successfully logged in, we might query our tasks:<br><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTasksOfUser'</span>, loginResponse.user)</code></pre></p>
+<h3 id="CRUD-operations-on-tasks"><a href="#CRUD-operations-on-tasks" class="headerlink" title="CRUD operations on tasks"></a>CRUD operations on tasks</h3><p>Save the logged-in user into a variabe:</p>
+<pre><code class="hljs javascript">user = loginResponse.user</code></pre>
+<p>Now that we are successfully logged in, we might query our tasks:<br><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTasksOfUser'</span>, user)</code></pre></p>
 <p>output:<br><pre><code class="hljs json">[
   &#123;
     <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
@@ -327,7 +329,7 @@ dotnet ef database update</code></pre>
 ]</code></pre></p>
 <p>All queried resources are saved in the Vuex store, <code>$vm.$store.state.tasks</code> will contain all previously queried tasks. Calling<br><pre><code class="hljs javascript">$vm.$store.state.tasks.get(loginResponse.user.id)</code></pre></p>
 <p>will return the same list of tasks as abbow.</p>
-<p>Let’s add a task:<br><pre><code class="hljs javascript">newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTaskToUser'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre></p>
+<h4 id="Add-A-Task"><a href="#Add-A-Task" class="headerlink" title="Add A Task"></a>Add A Task</h4><pre><code class="hljs javascript">newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTaskToUser'</span>, &#123;<span class="hljs-attr">user</span>: user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre>
 <p>output:<br><pre><code class="hljs json">&#123;
   <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
   <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
@@ -336,9 +338,8 @@ dotnet ef database update</code></pre>
   <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
   <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445762+02:00"</span>
 &#125;</code></pre></p>
-<p>Let’s try an update:</p>
-<pre><code class="hljs javascript">newTask.description = <span class="hljs-string">"bootgen.com/guide"</span>
-<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'updateTaskOfUser'</span>, &#123;<span class="hljs-attr">user</span>: loginResponse.user, <span class="hljs-attr">task</span>: newTask&#125;)</code></pre>
+<h4 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h4><pre><code class="hljs javascript">newTask.description = <span class="hljs-string">"bootgen.com/guide"</span>
+<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'updateTaskOfUser'</span>, &#123;<span class="hljs-attr">user</span>: user, <span class="hljs-attr">task</span>: newTask&#125;)</code></pre>
 <p>output:<br><pre><code class="hljs json">&#123;
   <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
   <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
@@ -347,7 +348,7 @@ dotnet ef database update</code></pre>
   <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
   <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
 &#125;</code></pre></p>
-<p>And finally delete it:<br><pre><code class="hljs javascripe">$vm.$store.dispatch(&apos;deleteTaskOfUser&apos;, &#123;user: loginResponse.user, task: newTask&#125;)</code></pre></p>
+<h4 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h4><pre><code class="hljs javascript">$vm.$store.dispatch(<span class="hljs-string">'deleteTaskOfUser'</span>, &#123;<span class="hljs-attr">user</span>: user, <span class="hljs-attr">task</span>: newTask&#125;)</code></pre>
 <h3 id="Removing-redundancy"><a href="#Removing-redundancy" class="headerlink" title="Removing redundancy"></a>Removing redundancy</h3><p>What we did so far works fine, however, there is some redundancy when calling the update and delete method. Technically it would not be necessary to pass the user parameter, as the server knows already which user a task belongs to. To address this problem, add <code>Task</code> as a root resource:</p>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
@@ -355,6 +356,27 @@ dotnet ef database update</code></pre>
     TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
     RootTaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
+<p>Run the generator, reset the database (with <code>resetdb.sh</code> or <code>resetdb.bat</code>) and restart the application. Now you can try the newly introduced CRUD operations:</p>
+<h4 id="Add-A-Task-1"><a href="#Add-A-Task-1" class="headerlink" title="Add A Task"></a>Add A Task</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>,&#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>, <span class="hljs-attr">ownerId</span>: user.id&#125;)</code></pre>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"bootgen.com"</span>,
+  <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
+  <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445762+02:00"</span>
+&#125;</code></pre></p>
+<h4 id="Update-1"><a href="#Update-1" class="headerlink" title="Update"></a>Update</h4><pre><code class="hljs javascript">newTask.description = <span class="hljs-string">"bootgen.com/guide"</span>
+<span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'updateTask'</span>, newTask)</code></pre>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Learn BootGen"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"bootgen.com/guide"</span>,
+  <span class="hljs-attr">"isDone"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"created"</span>: <span class="hljs-string">"2020-09-27T09:59:45.8445397+02:00"</span>,
+  <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
+&#125;</code></pre></p>
+<h4 id="Delete-1"><a href="#Delete-1" class="headerlink" title="Delete"></a>Delete</h4><pre><code class="hljs javascript">$vm.$store.dispatch(<span class="hljs-string">'deleteTask'</span>, newTask)</code></pre>
 <h2 id="The-Tags-Entity"><a href="#The-Tags-Entity" class="headerlink" title="The Tags Entity"></a>The Tags Entity</h2><p>We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be “important” or “urgent” or “fun”? What if we would also like to let users to define what tags they would like to use? For this reason, let’s create a <code>Tag</code> class:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tag</span>
 &#123;
