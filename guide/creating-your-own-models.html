@@ -421,6 +421,25 @@ dotnet ef database update</code></pre>
     api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>, parent: taskResource, manyToMany: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
 <p>We have registered <code>Tag</code> as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.</p>
+<p>Add some sample tags to the database seed, by directly adding it to the tasks of the first user:</p>
+<pre><code class="hljs csharp"><span class="hljs-keyword">new</span> User
+&#123;
+    UserName = <span class="hljs-string">"Sample User"</span>,
+    Email = <span class="hljs-string">"example@email.com"</span>,
+    PasswordHash = <span class="hljs-string">"AQAAAAEAACcQAAAAEL//UdrNeiFjd0hYeQEBOtAN+OXME8tu8kNMTg4wZUrBSt1/t0Okfs389I82ZaIU2Q=="</span>, <span class="hljs-comment">//password123</span>
+    Tasks = <span class="hljs-keyword">new</span> List&lt;Task&gt; &#123;
+         <span class="hljs-keyword">new</span> Task &#123;
+             Title = <span class="hljs-string">"Buy groceries"</span>,
+             Description = <span class="hljs-string">"Bread, Milk, Eggs"</span>,
+             Tags = <span class="hljs-keyword">new</span> List&lt;Tag&gt; &#123; <span class="hljs-keyword">new</span> Tag &#123; Name = <span class="hljs-string">"Urgent"</span>, Color=<span class="hljs-string">"#ff0000"</span> &#125; &#125;
+         &#125;,
+         <span class="hljs-keyword">new</span> Task &#123;
+             Title = <span class="hljs-string">"Clean up"</span>,
+             Description = <span class="hljs-string">"Kitchen, Bathroom"</span>,
+             Tags = <span class="hljs-keyword">new</span> List&lt;Tag&gt; &#123; <span class="hljs-keyword">new</span> Tag &#123; Name = <span class="hljs-string">"Important"</span>, Color=<span class="hljs-string">"#ff8800"</span> &#125; &#125;
+         &#125;
+     &#125;
+&#125;</code></pre>
 <p>Run the generator, reset the database and restart the application.</p>
 <p>Run the following commands:</p>
 <pre><code class="hljs javascript">loginResponse = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'login'</span>, &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">'example@email.com'</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">'password123'</span>&#125;)
