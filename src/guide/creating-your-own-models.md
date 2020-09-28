@@ -157,7 +157,7 @@ $vm.$store.commit('setJwt', loginResponse.jwt)
 
 Now that we are successfully logged in, we might query our tasks:
 ```javascript
-await $vm.$store.dispatch('getTasks', loginResponse.user)
+await $vm.$store.dispatch('getTasksOfUser', loginResponse.user)
 ```
 
 output:
@@ -190,7 +190,7 @@ will return the same list of tasks as abbow.
 
 Let's add a task:
 ```javascript
-newTask = await $vm.$store.dispatch('addTask', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
+newTask = await $vm.$store.dispatch('addTaskToUser', {user: loginResponse.user, task: {title: "Learn BootGen", description: "bootgen.com"}})
 ```
 output:
 ```json
@@ -207,7 +207,7 @@ Let's try an update:
 
 ```javascript
 newTask.description = "bootgen.com/guide"
-await $vm.$store.dispatch('updateTask', {user: loginResponse.user, task: newTask})
+await $vm.$store.dispatch('updateTaskOfUser', {user: loginResponse.user, task: newTask})
 ```
 output:
 ```json
@@ -222,7 +222,20 @@ output:
 ```
 And finally delete it:
 ```javascripe
-$vm.$store.dispatch('deleteTask', {user: loginResponse.user, task: newTask})
+$vm.$store.dispatch('deleteTaskOfUser', {user: loginResponse.user, task: newTask})
+```
+
+### Removing redundancy
+
+What we did so far works fine, however, there is some redundancy when calling the update and delete method. Technically it would not be necessary to pass the user parameter, as the server knows already which user a task belongs to. To address this problem, add `Task` as a root resource:
+
+```csharp
+internal static void AddResources(BootGenApi api)
+{
+    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
+    TaskResource = api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
+    RootTaskResource = api.AddResource<Task>(authenticate: true);
+}
 ```
 
 ## The Tags Entity
