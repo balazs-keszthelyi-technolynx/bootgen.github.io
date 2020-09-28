@@ -225,7 +225,7 @@
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-    TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
+    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
 &#125;</code></pre>
 <p>We have set <code>UserResource</code> as parent of <code>TaskResource</code>, and so we have created a One-To-Many relationship between <code>User</code> and <code>Task</code>.<br>The REST API we will access the To-Do items on the following path: <code>/users/{userId}/tasks</code>.<br>Naming the parent “Owner” means that the <code>Task</code> entity class will refer to the user it belongs to as “Owner”.</p>
 <p>Now users have a list of tasks. Lets change the <code>User</code> model to reflect that, by adding an other property:</p>
@@ -353,8 +353,8 @@ dotnet ef database update</code></pre>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-    TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
-    RootTaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>);
+    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
+    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
 <p>Run the generator, reset the database (with <code>resetdb.sh</code> or <code>resetdb.bat</code>) and restart the application. Now you can try the newly introduced CRUD operations:</p>
 <h4 id="Add-A-Task-1"><a href="#Add-A-Task-1" class="headerlink" title="Add A Task"></a>Add A Task</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>,&#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>, <span class="hljs-attr">ownerId</span>: user.id&#125;)</code></pre>
@@ -377,6 +377,8 @@ dotnet ef database update</code></pre>
   <span class="hljs-attr">"updated"</span>: <span class="hljs-string">"2020-09-27T10:04:28.1653196+02:00"</span>
 &#125;</code></pre></p>
 <h4 id="Delete-1"><a href="#Delete-1" class="headerlink" title="Delete"></a>Delete</h4><pre><code class="hljs javascript">$vm.$store.dispatch(<span class="hljs-string">'deleteTask'</span>, newTask)</code></pre>
+<p>We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:</p>
+<pre><code class="hljs csharp">api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, <span class="hljs-keyword">readonly</span>: <span class="hljs-literal">true</span>);</code></pre>
 <h2 id="The-Tags-Entity"><a href="#The-Tags-Entity" class="headerlink" title="The Tags Entity"></a>The Tags Entity</h2><p>We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be “important” or “urgent” or “fun”? What if we would also like to let users to define what tags they would like to use? For this reason, let’s create a <code>Tag</code> class:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tag</span>
 &#123;
@@ -391,15 +393,51 @@ dotnet ef database update</code></pre>
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Description &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">bool</span> IsDone &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     [<span class="hljs-meta">Resource</span>]
-    List&lt;Tag&gt; Tags &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
+    <span class="hljs-keyword">public</span> List&lt;Tag&gt; Tags &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
 <p>The relation of the <code>Task</code> and the <code>Tag</code> class is Many-To-Many. This is specified when registering the resource:</p>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-    TaskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>);
-    api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>, parent: TaskResource, manyToMany: <span class="hljs-literal">true</span>);
+    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, <span class="hljs-keyword">readonly</span>: <span class="hljs-literal">true</span>);
+    <span class="hljs-keyword">var</span> taskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>);
+    api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>);
+    api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>, parent: taskResource, manyToMany: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
+<p>We have registered <code>Tag</code> as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.</p>
+<p>Run the generator, reset the database and restart the application.</p>
+<p>Run the following commands:</p>
+<pre><code class="hljs javascript">loginResponse = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'login'</span>, &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">'example@email.com'</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">'password123'</span>&#125;)
+$vm.$store.commit(<span class="hljs-string">'setJwt'</span>, loginResponse.jwt)
+user = loginResponse.user
+newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTask'</span>,&#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>, <span class="hljs-attr">ownerId</span>: user.id&#125;)</code></pre>
+<h4 id="Get-the-list-of-tags"><a href="#Get-the-list-of-tags" class="headerlink" title="Get the list of tags"></a>Get the list of tags</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTags'</span>)</code></pre>
+<p>output:<br><pre><code class="hljs json">[
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Urgent"</span>,
+    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff0000"</span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Important"</span>,
+    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff8800"</span>
+  &#125;
+]</code></pre></p>
+<h4 id="Create-a-new-tag"><a href="#Create-a-new-tag" class="headerlink" title="Create a new tag"></a>Create a new tag</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTags'</span>)</code></pre>
+<p>output:<br><pre><code class="hljs json">[
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Urgent"</span>,
+    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff0000"</span>
+  &#125;,
+  &#123;
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Important"</span>,
+    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff8800"</span>
+  &#125;
+]</code></pre></p>
+<h4 id="Assign-the-new-Tag-to-a-task"><a href="#Assign-the-new-Tag-to-a-task" class="headerlink" title="Assign the new Tag to a task"></a>Assign the new Tag to a task</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTagToTask'</span>, &#123; <span class="hljs-attr">task</span>: newTask, <span class="hljs-attr">tag</span>: fun &#125;)</code></pre>
 
   
   
