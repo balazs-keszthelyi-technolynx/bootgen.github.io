@@ -424,19 +424,12 @@ newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span clas
     <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff8800"</span>
   &#125;
 ]</code></pre></p>
-<h4 id="Create-a-new-tag"><a href="#Create-a-new-tag" class="headerlink" title="Create a new tag"></a>Create a new tag</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'getTags'</span>)</code></pre>
-<p>output:<br><pre><code class="hljs json">[
-  &#123;
-    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
-    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Urgent"</span>,
-    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff0000"</span>
-  &#125;,
-  &#123;
-    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
-    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Important"</span>,
-    <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#ff8800"</span>
-  &#125;
-]</code></pre></p>
+<h4 id="Create-a-new-tag"><a href="#Create-a-new-tag" class="headerlink" title="Create a new tag"></a>Create a new tag</h4><pre><code class="hljs javascript">fun = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTag'</span>, &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">'Fun'</span>, <span class="hljs-attr">color</span>: <span class="hljs-string">'#00ff00'</span> &#125;)</code></pre>
+<p>output:<br><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">3</span>,
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Fun"</span>,
+  <span class="hljs-attr">"color"</span>: <span class="hljs-string">"#00ff00"</span>
+&#125;</code></pre></p>
 <h4 id="Assign-the-new-Tag-to-a-task"><a href="#Assign-the-new-Tag-to-a-task" class="headerlink" title="Assign the new Tag to a task"></a>Assign the new Tag to a task</h4><pre><code class="hljs javascript"><span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTagToTask'</span>, &#123; <span class="hljs-attr">task</span>: newTask, <span class="hljs-attr">tag</span>: fun &#125;)</code></pre>
 
   
