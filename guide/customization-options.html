@@ -6,7 +6,7 @@
   <head><meta name="generator" content="Hexo 3.9.0">
     <title>Customization Options — BootGen</title>
     <meta charset="utf-8">
-    <meta name="description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
+    <meta name="description" content="BootGen - Code Generator Toolkit for ASP.Net Core and Vue.js">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="alternate" hreflang="x-default" href="https://vuejs.org/guide/customization-options.html">
@@ -20,7 +20,7 @@
 
     <meta property="og:type" content="article">
     <meta property="og:title" content="Customization Options — BootGen">
-    <meta property="og:description" content="BootGen - Code Generator for ASP.Net Core and Vue.js">
+    <meta property="og:description" content="BootGen - Code Generator Toolkit for ASP.Net Core and Vue.js">
     <meta property="og:image" content="https://bootgen.com//images/logo.png">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
@@ -234,7 +234,7 @@
     <h1>Customization Options</h1>
   
   
-    <h2 id="Irregular-Plural-Nouns"><a href="#Irregular-Plural-Nouns" class="headerlink" title="Irregular Plural Nouns"></a>Irregular Plural Nouns</h2><p>Sometimes we need to use <a href="https://www.grammarly.com/blog/irregular-plural-nouns/" target="_blank" rel="noopener">irregular plural nouns</a> as class name. You might for example have a class named <code>LogEntry</code>. You can specify the plural form of the name the following way:</p>
+    <h2 id="Irregular-Plural-Nouns"><a href="#Irregular-Plural-Nouns" class="headerlink" title="Irregular Plural Nouns"></a>Irregular Plural Nouns</h2><p>Sometimes we need to use an <a href="https://www.grammarly.com/blog/irregular-plural-nouns/" target="_blank" rel="noopener">irregular plural noun</a> as class name. You might for example have a class named <code>LogEntry</code>. You can specify the plural form of the name the following way:</p>
 <pre><code class="hljs csharp">[<span class="hljs-meta">PluralName(<span class="hljs-meta-string">"LogEntries"</span>)</span>]
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">LogEntry</span> &#123;
   <span class="hljs-keyword">public</span> DateTime Timestamp &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
@@ -248,7 +248,7 @@
 <li>The http path will be <code>logs/{id}/entries</code> instead of <code>logs/{id}/log-entries</code></li>
 <li>The controller will be called <code>LogsEntriesController</code> instead of <code>LogsLogEntriesController</code></li>
 <li><p>The service will be called <code>LogsEntriesService</code> instead of <code>LogsLogEntriesService</code></p>
-<h2 id="Custom-namesfor-controllers-and-services"><a href="#Custom-namesfor-controllers-and-services" class="headerlink" title="Custom namesfor controllers and services"></a>Custom namesfor controllers and services</h2></li>
+<h2 id="Custom-names-for-controllers-and-services"><a href="#Custom-names-for-controllers-and-services" class="headerlink" title="Custom names for controllers and services"></a>Custom names for controllers and services</h2></li>
 </ul>
 <p>If you do not like the naming convention that BootGen uses for controllers and services, or if they are against the naming policy of your company, you can set the names explicitly:</p>
 <pre><code class="hljs csharp">logEntryResource.GenerationSettings.ServiceName = <span class="hljs-string">"LogEntriesDataService"</span>;
