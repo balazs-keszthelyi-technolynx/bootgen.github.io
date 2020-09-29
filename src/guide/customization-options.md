@@ -6,7 +6,7 @@ order: 6
 
 ## Irregular Plural Nouns
 
-Sometimes we need to use [irregular plural nouns](https://www.grammarly.com/blog/irregular-plural-nouns/) as class name. You might for example have a class named `LogEntry`. You can specify the plural form of the name the following way:
+Sometimes we need to use an [irregular plural noun](https://www.grammarly.com/blog/irregular-plural-nouns/) as class name. You might for example have a class named `LogEntry`. You can specify the plural form of the name the following way:
 
 ```csharp
 [PluralName("LogEntries")]
@@ -15,6 +15,7 @@ public class LogEntry {
   public string Message { get; set; }
 }
 ```
+
 You may also specify the name (and plural name) of the resource to be different than the class name:
 
 ```csharp
@@ -27,7 +28,7 @@ In this case setting the resource name will result in the following:
  * The controller will be called `LogsEntriesController` instead of `LogsLogEntriesController`
  * The service will be called `LogsEntriesService` instead of `LogsLogEntriesService`
  
- ## Custom namesfor controllers and services
+ ## Custom names for controllers and services
 
 If you do not like the naming convention that BootGen uses for controllers and services, or if they are against the naming policy of your company, you can set the names explicitly:
 

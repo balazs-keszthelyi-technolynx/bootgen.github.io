@@ -92,13 +92,13 @@ dotnet run
 ```
 
 Check the changes in git! You will see the following:
- * A task entity is created both on the client and the server side
- * A nested controller is created
- * A service and a sevice interface is created
- * The service is registered to the dependency injection container
+ * A task entity is created both on the client and the server side.
+ * A nested controller is created for the tasks.
+ * A service and a service interface is created.
+ * The service is registered to the dependency injection container.
  * The `DbContext` was extended with a tasks `DBSet`, and the database seed was extended with our example tasks.
- * The REST API specification is extended in the `restapi.yml` file
- * The Vuex store is extended with the CRUD operations for the task entity
+ * The REST API specification is extended in the `restapi.yml` file.
+ * The Vuex store is extended with the CRUD operations for the task entity.
  
 ## Playing With The Application From The Browser Console
  
@@ -113,14 +113,14 @@ rm web_project.db
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
-Starting up your project you probably want to do this offen. You can use the `resetdb.sh` script (or `resetdb.bat` on Windows) as a shortcut.
+Starting up your project you probably want to do this often. You can use the `resetdb.sh` script (or `resetdb.bat` on Windows) as a shortcut.
 
 Start the server by running the following command:
 
 ```sh
 dotnet run
 ```
-In a separate terminal window start the client, by running the following command in the `WebProject/ClietApp` folder:
+In a separate terminal window start the client, by running the following command in the `WebProject/ClientApp` folder:
 
 ```sh
 npm run serve
@@ -132,7 +132,7 @@ Select the "Vue" tab and click on the "Root" component. This will create a `$vm`
 
 ### Send Login Request
 
-Select the "Console" tab, and send a login request with the followin line of JavaScript code:
+Select the "Console" tab, and send a login request with the following line of JavaScript code:
 
 ```javascript
 loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
@@ -148,26 +148,26 @@ output:
   }
 }
 ```
-If the application is working correctly, then an object must have appeared on the console with a `user` and the `jwt` property. The value of the `jwt` (JSON Web Token) property is ou session token. Let's store this token to be used in the following requests:
+If the application is working correctly, then an object must have appeared on the console with a `user` and the `jwt` property. The value of the `jwt` (JSON Web Token) property is our session token. Let's store this token to be used in the following requests:
 ```javascript
 $vm.$store.commit('setJwt', loginResponse.jwt)
 ```
 
 ### CRUD operations on tasks
 
-Save the logged-in user into a variabe:
+Save the logged-in user into a variable:
 
 ```javascript
 user = loginResponse.user
 ```
 
-
 Now that we are successfully logged in, we might query our tasks:
+
 ```javascript
 await $vm.$store.dispatch('getTasksOfUser', user)
 ```
-
 output:
+
 ```json
 [
   {
@@ -188,18 +188,22 @@ output:
   }
 ]
 ```
+All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will contain all previously queried tasks.
+Calling
 
-All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will contain all previously queried tasks. Calling
 ```javascript
 $vm.$store.state.tasks.get(loginResponse.user.id)
 ```
-will return the same list of tasks as abbow.
+will return the same list of tasks as above.
 
 #### Add A Task
+
 ```javascript
 newTask = await $vm.$store.dispatch('addTaskToUser', {user: user, task: {title: "Learn BootGen", description: "bootgen.com"}})
 ```
+
 output:
+
 ```json
 {
   "id": 3,
@@ -210,13 +214,16 @@ output:
   "updated": "2020-09-27T09:59:45.8445762+02:00"
 }
 ```
+
 #### Update
 
 ```javascript
 newTask.description = "bootgen.com/guide"
 await $vm.$store.dispatch('updateTaskOfUser', {user: user, task: newTask})
 ```
+
 output:
+
 ```json
 {
   "id": 3,
@@ -227,7 +234,9 @@ output:
   "updated": "2020-09-27T10:04:28.1653196+02:00"
 }
 ```
+
 #### Delete
+
 ```javascript
 $vm.$store.dispatch('deleteTaskOfUser', {user: user, task: newTask})
 ```
@@ -248,10 +257,13 @@ internal static void AddResources(BootGenApi api)
 Run the generator, reset the database (with `resetdb.sh` or `resetdb.bat`) and restart the application. Now you can try the newly introduced CRUD operations:
 
 #### Add A Task
+
 ```javascript
 await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
 ```
+
 output:
+
 ```json
 {
   "id": 3,
@@ -269,7 +281,9 @@ output:
 newTask.description = "bootgen.com/guide"
 await $vm.$store.dispatch('updateTask', newTask)
 ```
+
 output:
+
 ```json
 {
   "id": 3,
@@ -280,7 +294,9 @@ output:
   "updated": "2020-09-27T10:04:28.1653196+02:00"
 }
 ```
+
 #### Delete
+
 ```javascript
 $vm.$store.dispatch('deleteTask', newTask)
 ```
@@ -303,7 +319,7 @@ public class Tag
 }
 ```
 
-As we did previously with the User clas, add the tags list to the `Task` class:
+As we did previously with the User class, add the tags list to the `Task` class:
 
 ```csharp
 [HasTimestamps]
@@ -332,7 +348,7 @@ internal static void AddResources(BootGenApi api)
 
 We have registered `Tag` as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.
 
-Add some sample tags to the database seed, by directly adding it to the tasks of the first user:
+Add some sample tags to the database seed, by directly adding them to the tasks of the first user:
 
 ```csharp
 new User
@@ -354,7 +370,6 @@ new User
      }
 }
 ```
-
 
 Run the generator, reset the database and restart the application.
 
