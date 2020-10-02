@@ -192,7 +192,7 @@ All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will
 Calling
 
 ```javascript
-$vm.$store.state.tasks.get(loginResponse.user.id)
+$vm.$store.state.tasksOfUser.get(loginResponse.user.id)
 ```
 will return the same list of tasks as above.
 
@@ -304,7 +304,7 @@ $vm.$store.dispatch('deleteTask', newTask)
 We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:
 
 ```csharp
-api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", readonly: true);
+api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", isReadonly: true);
 ```
 
 ## The Tags Entity
@@ -339,7 +339,7 @@ The relation of the `Task` and the `Tag` class is Many-To-Many. This is specifie
 internal static void AddResources(BootGenApi api)
 {
     UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", readonly: true);
+    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", isReadonly: true);
     var taskResource = api.AddResource<Task>(authenticate: true);
     api.AddResource<Tag>(authenticate: true);
     api.AddResource<Tag>(authenticate: true, parent: taskResource, manyToMany: true);

@@ -9,7 +9,7 @@ order: 3
 Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined `User` model. In the `Generator/Models.cs` file you will find the pre-defined models, the first being the User model:
 
 ```csharp
-class User
+public class User
 {
     public string UserName { get; set; }
     public string Email { get; set; }
@@ -47,7 +47,7 @@ You also might notice that the generated entity classes have an integer identifi
 
 ## Controllers
 
-The other important part of the model are the controllers. Controllers are defined with C# interfaces. There are some pre-defined controllers that are beneficiary for most applications.
+The other important part of the model are the controllers. Controllers are defined with C# interfaces. There are some pre-defined controllers that are beneficial for most applications.
 
 ### Authentication
 

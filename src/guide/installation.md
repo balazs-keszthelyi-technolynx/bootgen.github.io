@@ -14,7 +14,7 @@ To use this toolkit make sure that you have the following installed:
 
 ## Get BootGen From GitHub
 
-The recommended way to start developing with BootGen is to clone or fork the [template project](https://github.com/BootGen/BootGenVue) on GitHub.
+The recommended way to start developing with BootGen is to use our [template project](https://github.com/BootGen/BootGenVue) on GitHub.
 
 In the repository you will see two folders: `WebProject` and `Generator`. In the WebProject folder there is an ASP.Net Core application. In `WebProject/ClientApp` there is a Vue.js application. The `Generator` folder contains the models and templates for code generation. 
 

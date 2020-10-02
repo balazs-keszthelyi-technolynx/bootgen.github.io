@@ -19,7 +19,7 @@ internal static void AddResources(BootGenApi api)
 }
 ```
 
-Because resources are stored in the database, the `User` class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification are not handled buy the user resource controller.
+Because resources are stored in the database, the `User` class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification are not handled by the user resource controller.
 The authentication parameter means, that the user have to be logged in to query the list of users.
 
 For this resource the following files are generated:
