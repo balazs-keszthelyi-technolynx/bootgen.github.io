@@ -352,7 +352,7 @@ dotnet ef database update</code></pre>
   &#125;
 ]</code></pre>
 <p>All queried resources are saved in the Vuex store, <code>$vm.$store.state.tasks</code> will contain all previously queried tasks.<br>Calling</p>
-<pre><code class="hljs javascript">$vm.$store.state.tasks.get(loginResponse.user.id)</code></pre>
+<pre><code class="hljs javascript">$vm.$store.state.tasksOfUser.get(loginResponse.user.id)</code></pre>
 <p>will return the same list of tasks as above.</p>
 <h4 id="Add-A-Task"><a href="#Add-A-Task" class="headerlink" title="Add A Task"></a>Add A Task</h4><pre><code class="hljs javascript">newTask = <span class="hljs-keyword">await</span> $vm.$store.dispatch(<span class="hljs-string">'addTaskToUser'</span>, &#123;<span class="hljs-attr">user</span>: user, <span class="hljs-attr">task</span>: &#123;<span class="hljs-attr">title</span>: <span class="hljs-string">"Learn BootGen"</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">"bootgen.com"</span>&#125;&#125;)</code></pre>
 <p>output:</p>
@@ -407,7 +407,7 @@ dotnet ef database update</code></pre>
 &#125;</code></pre>
 <h4 id="Delete-1"><a href="#Delete-1" class="headerlink" title="Delete"></a>Delete</h4><pre><code class="hljs javascript">$vm.$store.dispatch(<span class="hljs-string">'deleteTask'</span>, newTask)</code></pre>
 <p>We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:</p>
-<pre><code class="hljs csharp">api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, <span class="hljs-keyword">readonly</span>: <span class="hljs-literal">true</span>);</code></pre>
+<pre><code class="hljs csharp">api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, isReadonly: <span class="hljs-literal">true</span>);</code></pre>
 <h2 id="The-Tags-Entity"><a href="#The-Tags-Entity" class="headerlink" title="The Tags Entity"></a>The Tags Entity</h2><p>We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be “important” or “urgent” or “fun”? What if we would also like to let users to define what tags they would like to use? For this reason, let’s create a <code>Tag</code> class:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Tag</span>
 &#123;
@@ -428,7 +428,7 @@ dotnet ef database update</code></pre>
 <pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">BootGenApi api</span>)</span>
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
-    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, <span class="hljs-keyword">readonly</span>: <span class="hljs-literal">true</span>);
+    api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>, parent: UserResource, parentName: <span class="hljs-string">"Owner"</span>, isReadonly: <span class="hljs-literal">true</span>);
     <span class="hljs-keyword">var</span> taskResource = api.AddResource&lt;Task&gt;(authenticate: <span class="hljs-literal">true</span>);
     api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>);
     api.AddResource&lt;Tag&gt;(authenticate: <span class="hljs-literal">true</span>, parent: taskResource, manyToMany: <span class="hljs-literal">true</span>);

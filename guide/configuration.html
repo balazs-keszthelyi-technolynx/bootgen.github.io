@@ -242,7 +242,7 @@
 &#123;
     UserResource = api.AddResource&lt;User&gt;(isReadonly: <span class="hljs-literal">true</span>, authenticate: <span class="hljs-literal">true</span>);
 &#125;</code></pre>
-<p>Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification are not handled buy the user resource controller.<br>The authentication parameter means, that the user have to be logged in to query the list of users.</p>
+<p>Because resources are stored in the database, the <code>User</code> class will get an integer identifier. The resource is set to readonly, as the registration and the profile data modification are not handled by the user resource controller.<br>The authentication parameter means, that the user have to be logged in to query the list of users.</p>
 <p>For this resource the following files are generated:</p>
 <ul>
 <li><a href="https://github.com/BootGen/BootGenVue/blob/master/WebProject/Controllers/UsersController.cs" target="_blank" rel="noopener">UsersController.cs</a></li>
