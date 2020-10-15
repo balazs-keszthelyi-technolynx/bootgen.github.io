@@ -24,14 +24,17 @@ If this attribute is set, then the default implementation of the `TasksService` 
 In the `Configuration.cs` file we add this class to the API as a resource:
 
 ```csharp
-internal static void AddResources(BootGenApi api)
+internal static void AddResources(ResourceCollection resourceCollection)
 {
-    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
+    UserResource = resourceCollection.Add<User>();
+    UserResource.IsReadonly = true;
+    UserResource.Authenticate = true;
+    var tasksOfUsersResource = UserResource.OneToMany<Task>();
+    tasksOfUsersResource.Authenticate = true;
 }
 ```
 
-We have set `UserResource` as parent of `TaskResource`, and so we have created a One-To-Many relationship between `User` and `Task`.
+Using `UserResource.OneToMany<Task>()`, we created a One-To-Many relationship between `User` and `Task`.
 The REST API we will access the To-Do items on the following path: `/users/{userId}/tasks`.
 Naming the parent "Owner" means that the `Task` entity class will refer to the user it belongs to as "Owner".
 
@@ -246,11 +249,15 @@ $vm.$store.dispatch('deleteTaskOfUser', {user: user, task: newTask})
 What we did so far works fine, however, there is some redundancy when calling the update and delete method. Technically it would not be necessary to pass the user parameter, as the server knows already which user a task belongs to. To address this problem, add `Task` as a root resource:
 
 ```csharp
-internal static void AddResources(BootGenApi api)
+internal static void AddResources(ResourceCollection resourceCollection)
 {
-    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner");
-    api.AddResource<Task>(authenticate: true);
+    UserResource = resourceCollection.Add<User>();
+    UserResource.IsReadonly = true;
+    UserResource.Authenticate = true;
+    var tasksOfUsersResource = UserResource.OneToMany<Task>();
+    tasksOfUsersResource.Authenticate = true;
+    var tasksResource = resourceCollection.Add<Task>();
+    tasksResource.Authenticate = true;
 }
 ```
 
@@ -259,7 +266,7 @@ Run the generator, reset the database (with `resetdb.sh` or `resetdb.bat`) and r
 #### Add A Task
 
 ```javascript
-await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
+await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", userId: user.id})
 ```
 
 output:
@@ -304,7 +311,7 @@ $vm.$store.dispatch('deleteTask', newTask)
 We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:
 
 ```csharp
-api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", isReadonly: true);
+tasksOfUsersResource.IsReadonly = true;
 ```
 
 ## The Tags Entity
@@ -336,13 +343,20 @@ public class Task
 The relation of the `Task` and the `Tag` class is Many-To-Many. This is specified when registering the resource:
 
 ```csharp
-internal static void AddResources(BootGenApi api)
+internal static void AddResources(ResourceCollection resourceCollection)
 {
-    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
-    api.AddResource<Task>(authenticate: true, parent: UserResource, parentName: "Owner", isReadonly: true);
-    var taskResource = api.AddResource<Task>(authenticate: true);
-    api.AddResource<Tag>(authenticate: true);
-    api.AddResource<Tag>(authenticate: true, parent: taskResource, manyToMany: true);
+    UserResource = resourceCollection.Add<User>();
+    UserResource.IsReadonly = true;
+    UserResource.Authenticate = true;
+    var tasksOfUsersResource = UserResource.OneToMany<Task>();
+    tasksOfUsersResource.Authenticate = true;
+    tasksOfUsersResource.IsReadonly = true;
+    var tasksResource = resourceCollection.Add<Task>();
+    tasksResource.Authenticate = true;
+    var tagsResource = resourceCollection.Add<Tag>();
+    tagsResource.Authenticate = true;
+    var tagsOfTask = tasksResource.ManyToMany<Tag>();
+    tagsOfTask.Authenticate = true;
 }
 ```
 
@@ -379,7 +393,7 @@ Run the following commands:
 loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
 $vm.$store.commit('setJwt', loginResponse.jwt)
 user = loginResponse.user
-newTask = await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
+newTask = await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", userId: user.id})
 ```
 #### Get the list of tags
 
