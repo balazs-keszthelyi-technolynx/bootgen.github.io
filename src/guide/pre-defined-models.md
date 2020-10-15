@@ -66,11 +66,9 @@ class LoginResponse
 
 interface Authentication
 {
-   [Post]
    LoginResponse Login(AuthenticationData data);
 }
 ```
-The `Post` attribute on the login method sets the HTTP verb for the controller methods. Other useable attributes are `Get`, `Put`, `Patch` and `Delete`.
 
 Because `AuthenticationData` and `LoginResponse` are simple data transfer objects (DTOs) that are not persisted in the database, their generated server side counterparts are identical to them. The generated entities on the client side look the following:
 
@@ -112,6 +110,7 @@ interface Registration
     ProfileResponse Register(RegistrationData data);
 }
 ```
+The `Post` attribute sets the HTTP verb for the controller methods. Other useable attributes are `Get`, `Put`, `Patch` and `Delete`.
 
 Users expects our application to show form validation errors (like "email address is already in use") before they are actually submitting a form. We define the `CheckRegistration` method for this reason. It can check the validity of the registration form without making any changes on the server.
 
