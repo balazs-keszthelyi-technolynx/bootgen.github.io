@@ -19,8 +19,12 @@ public class LogEntry {
 You may also specify the name (and plural name) of the resource to be different than the class name:
 
 ```csharp
-var logResource = api.AddResource<Log>(authenticate: true);
-var logEntryResource = api.AddResource<LogEntry>(name: "Entry", pluralName: "Entries", parent: LogResource, authenticate: true);
+var logResource = resourceCollection.Add<LogEntry>();
+logResource.Authenticate = true;
+var logEntryResource = logResource.OneToMany<LogEntry>();
+logEntryResource.Authenticate = true;
+logEntryResource.Name = "Entry";
+logEntryResource.Name.Plural = "Entries";
 ```
 
 In this case setting the resource name will result in the following:
