@@ -13,9 +13,11 @@ If we look into the `Generator/Configuration.cs` file, we will see that the `Use
 ```csharp
 private static Resource UserResource { get; set; }
 
-internal static void AddResources(BootGenApi api)
+ internal static void AddResources(ResourceCollection resourceCollection)
 {
-    UserResource = api.AddResource<User>(isReadonly: true, authenticate: true);
+    UserResource = resourceCollection.Add<User>();
+    UserResource.IsReadonly = true;
+    UserResource.Authenticate = true;
 }
 ```
 
@@ -35,14 +37,15 @@ UserResource.GenerationSettings.GenerateService = false;
 
 ## Creating Controllers
 
-A little bellow the controllers are registered:
+A little below the controllers are registered:
 
 ```csharp
-internal static void AddControllers(BootGenApi api)
+ internal static void AddControllers(ControllerCollection controllerCollection)
 {
-    api.AddController<Authentication>();
-    api.AddController<Registration>();
-    api.AddController<Profile>(authenticate: true);
+    controllerCollection.Add<Authentication>();
+    controllerCollection.Add<Registration>();
+    var profileController = controllerCollection.Add<Profile>();
+    profileController.Authenticate = true;
 }
 ```
 Classes that we have defined in the `Model.cs` file and are only referred to (directly or indirectly) by the controller interfaces, but not the resources are handled as simple DTO classes. This means that they will not be persisted in the database, and will not get a generated identifier.
