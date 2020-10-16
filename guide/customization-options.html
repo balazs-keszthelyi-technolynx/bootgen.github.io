@@ -241,8 +241,12 @@
   <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Message &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
 <p>You may also specify the name (and plural name) of the resource to be different than the class name:</p>
-<pre><code class="hljs csharp"><span class="hljs-keyword">var</span> logResource = api.AddResource&lt;Log&gt;(authenticate: <span class="hljs-literal">true</span>);
-<span class="hljs-keyword">var</span> logEntryResource = api.AddResource&lt;LogEntry&gt;(name: <span class="hljs-string">"Entry"</span>, pluralName: <span class="hljs-string">"Entries"</span>, parent: LogResource, authenticate: <span class="hljs-literal">true</span>);</code></pre>
+<pre><code class="hljs csharp"><span class="hljs-keyword">var</span> logResource = resourceCollection.Add&lt;LogEntry&gt;();
+logResource.Authenticate = <span class="hljs-literal">true</span>;
+<span class="hljs-keyword">var</span> logEntryResource = logResource.OneToMany&lt;LogEntry&gt;();
+logEntryResource.Authenticate = <span class="hljs-literal">true</span>;
+logEntryResource.Name = <span class="hljs-string">"Entry"</span>;
+logEntryResource.Name.Plural = <span class="hljs-string">"Entries"</span>;</code></pre>
 <p>In this case setting the resource name will result in the following:</p>
 <ul>
 <li>The http path will be <code>logs/{id}/entries</code> instead of <code>logs/{id}/log-entries</code></li>
