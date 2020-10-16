@@ -31,6 +31,7 @@ internal static void AddResources(ResourceCollection resourceCollection)
     UserResource.Authenticate = true;
     var tasksOfUsersResource = UserResource.OneToMany<Task>();
     tasksOfUsersResource.Authenticate = true;
+    tasksOfUsersResource.ParentName = "Owner";
 }
 ```
 
@@ -256,6 +257,7 @@ internal static void AddResources(ResourceCollection resourceCollection)
     UserResource.Authenticate = true;
     var tasksOfUsersResource = UserResource.OneToMany<Task>();
     tasksOfUsersResource.Authenticate = true;
+    tasksOfUsersResource.ParentName = "Owner";
     var tasksResource = resourceCollection.Add<Task>();
     tasksResource.Authenticate = true;
 }
@@ -266,7 +268,7 @@ Run the generator, reset the database (with `resetdb.sh` or `resetdb.bat`) and r
 #### Add A Task
 
 ```javascript
-await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", userId: user.id})
+await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
 ```
 
 output:
@@ -393,7 +395,7 @@ Run the following commands:
 loginResponse = await $vm.$store.dispatch('login', {email: 'example@email.com', password: 'password123'})
 $vm.$store.commit('setJwt', loginResponse.jwt)
 user = loginResponse.user
-newTask = await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", userId: user.id})
+newTask = await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
 ```
 #### Get the list of tags
 
