@@ -353,12 +353,13 @@ internal static void AddResources(ResourceCollection resourceCollection)
     var tasksOfUsersResource = UserResource.OneToMany<Task>();
     tasksOfUsersResource.Authenticate = true;
     tasksOfUsersResource.IsReadonly = true;
+    tasksOfUsersResource.ParentName = "Owner";
     var tasksResource = resourceCollection.Add<Task>();
     tasksResource.Authenticate = true;
     var tagsResource = resourceCollection.Add<Tag>();
     tagsResource.Authenticate = true;
-    var tagsOfTask = tasksResource.ManyToMany<Tag>();
-    tagsOfTask.Authenticate = true;
+    var tagsOfTaskResource = tasksResource.ManyToMany<Tag>();
+    tagsOfTaskResource.Authenticate = true;
 }
 ```
 
