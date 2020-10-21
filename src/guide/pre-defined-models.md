@@ -9,6 +9,8 @@ order: 3
 Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined `User` model. In the `Generator/Models.cs` file you will find the pre-defined models, the first being the User model:
 
 ```csharp
+[Readonly]
+[Authenticate]
 public class User
 {
     public string UserName { get; set; }
@@ -17,6 +19,8 @@ public class User
     public string PasswordHash { get; set; }
 }
 ```
+
+The `Readonly` attribute makes the user resource readonly. (Registration and profile update functionality will be implemented separately.) The `Authenticate` attribute means that the user resource is only available for authenticated users.
 
 Based on this model entity classes are generated on both server and client side.
 On the server side the generated class is found in `WebProject/User.cs`:
@@ -124,6 +128,7 @@ public class ChangePasswordData
     public string NewPassword { get; set; }
 }
 
+[Authenticate]
 interface Profile
 {
     [Get]
