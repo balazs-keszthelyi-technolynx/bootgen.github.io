@@ -235,13 +235,16 @@
   
   
     <h2 id="User-Entity"><a href="#User-Entity" class="headerlink" title="User Entity"></a>User Entity</h2><p>Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined <code>User</code> model. In the <code>Generator/Models.cs</code> file you will find the pre-defined models, the first being the User model:</p>
-<pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
+<pre><code class="hljs csharp">[<span class="hljs-meta">Readonly</span>]
+[<span class="hljs-meta">Authenticate</span>]
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
 &#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> UserName &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> Email &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
     [<span class="hljs-meta">ServerOnly</span>]
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> PasswordHash &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;</code></pre>
+<p>The <code>Readonly</code> attribute makes the user resource readonly. (Registration and profile update functionality will be implemented separately.) The <code>Authenticate</code> attribute means that the user resource is only available for authenticated users.</p>
 <p>Based on this model entity classes are generated on both server and client side.<br>On the server side the generated class is found in <code>WebProject/User.cs</code>:</p>
 <pre><code class="hljs csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">User</span>
 &#123;
@@ -317,6 +320,7 @@
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">string</span> NewPassword &#123; <span class="hljs-keyword">get</span>; <span class="hljs-keyword">set</span>; &#125;
 &#125;
 
+[<span class="hljs-meta">Authenticate</span>]
 <span class="hljs-keyword">interface</span> <span class="hljs-title">Profile</span>
 &#123;
     [<span class="hljs-meta">Get</span>]
