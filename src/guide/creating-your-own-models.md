@@ -9,6 +9,7 @@ order: 5
 In this section we will create an example To-Do list application with BootGen. The first thing in our domain model will be a task:
 
 ```csharp
+[Authenticate]
 [HasTimestamps]
 public class Task
 {
@@ -21,25 +22,7 @@ public class Task
 The `HasTimestamps` attribute on the `Task` class adds two properties to the model: a `Created` and an `Updated` timestamp.
 If this attribute is set, then the default implementation of the `TasksService` will set these timestamps properties as needed.
 
-In the `Configuration.cs` file we add this class to the API as a resource:
-
-```csharp
-internal static void AddResources(ResourceCollection resourceCollection)
-{
-    UserResource = resourceCollection.Add<User>();
-    UserResource.IsReadonly = true;
-    UserResource.Authenticate = true;
-    var tasksOfUsersResource = UserResource.OneToMany<Task>();
-    tasksOfUsersResource.Authenticate = true;
-    tasksOfUsersResource.ParentName = "Owner";
-}
-```
-
-Using `UserResource.OneToMany<Task>()`, we created a One-To-Many relationship between `User` and `Task`.
-The REST API we will access the To-Do items on the following path: `/users/{userId}/tasks`.
-Naming the parent "Owner" means that the `Task` entity class will refer to the user it belongs to as "Owner".
-
-Now users have a list of tasks. Lets change the `User` model to reflect that, by adding an other property:
+We add a list of tasks to the user model:
 
 ```csharp
 public class User
@@ -48,13 +31,16 @@ public class User
     public string Email { get; set; }
     [ServerOnly]
     public string PasswordHash { get; set; }
-    [Resource]
+    [OneToMany(parentName: "Owner")]
     public List<Task> Tasks { get; set; }
 }
 ```
 
-The `Resource` attribute on the property means that the task list is not part of the user entity, rather it is a nested resource. If we would run the generator now, we would see that the user entity classes remain unchanged by this modification. The only reason of declaring this property is, that we can extend the database seed. Lets do that by adding some example tasks for the first example user in the `Configuration.cs` file:
+Using the `OneToMany` attribute, we have created a One-To-Many relationship between the `User` and the `Task` resource.
+The REST API will expose the tasks on the following path: `/users/{userId}/tasks`.
+Naming the parent "Owner" means that the `Task` entity class will refer to the user it belongs to as "Owner". The `parentName` is optional. If we did not have set it, then the tasks would refer to their parent usersimply as `User`.
 
+Now we can add some example tasks for the first example user in the `Configuration.cs` file:
 
 ```csharp
 internal static void AddSeeds(SeedDataStore seedStore)
@@ -96,10 +82,9 @@ dotnet run
 ```
 
 Check the changes in git! You will see the following:
- * A task entity is created both on the client and the server side.
- * A nested controller is created for the tasks.
- * A service and a service interface is created.
- * The service is registered to the dependency injection container.
+ * The enties are updated both on the client and the server side.
+ * Controllers and services are created to implement the CRUD operations for the tasks.
+ * The services are registered to the dependency injection container.
  * The `DbContext` was extended with a tasks `DBSet`, and the database seed was extended with our example tasks.
  * The REST API specification is extended in the `restapi.yml` file.
  * The Vuex store is extended with the CRUD operations for the task entity.
@@ -192,83 +177,40 @@ output:
   }
 ]
 ```
-All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will contain all previously queried tasks.
-Calling
+All queried resources are saved in the Vuex store, `$vm.$store.state.tasks` will contain all previously queried tasks. The result of the  `getTasksOfUser` call will also be saved in `user.tasks` If you check the content of the user variable, you will see the following:
 
-```javascript
-$vm.$store.state.tasksOfUser.get(loginResponse.user.id)
+```json
+{
+  "id": 1,
+  "userName": "Sample User",
+  "email": "example@email.com",
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Buy groceries",
+      "description": "Bread, Milk, Eggs",
+      "isDone": false,
+      "created": "2020-10-21T11:18:45.000Z",
+      "updated": "2020-10-21T11:18:45.000Z",
+      "ownerId": 1
+    },
+    {
+      "id": 2,
+      "title": "Clean up",
+      "description": "Kitchen, Bathroom",
+      "isDone": false,
+      "created": "2020-10-21T11:18:45.000Z",
+      "updated": "2020-10-21T11:18:45.000Z",
+      "ownerId": 1
+    }
+  ]
+}
 ```
-will return the same list of tasks as above.
 
 #### Add A Task
 
 ```javascript
-newTask = await $vm.$store.dispatch('addTaskToUser', {user: user, task: {title: "Learn BootGen", description: "bootgen.com"}})
-```
-
-output:
-
-```json
-{
-  "id": 3,
-  "title": "Learn BootGen",
-  "description": "bootgen.com",
-  "isDone": false,
-  "created": "2020-09-27T09:59:45.8445397+02:00",
-  "updated": "2020-09-27T09:59:45.8445762+02:00"
-}
-```
-
-#### Update
-
-```javascript
-newTask.description = "bootgen.com/guide"
-await $vm.$store.dispatch('updateTaskOfUser', {user: user, task: newTask})
-```
-
-output:
-
-```json
-{
-  "id": 3,
-  "title": "Learn BootGen",
-  "description": "bootgen.com/guide",
-  "isDone": false,
-  "created": "2020-09-27T09:59:45.8445397+02:00",
-  "updated": "2020-09-27T10:04:28.1653196+02:00"
-}
-```
-
-#### Delete
-
-```javascript
-$vm.$store.dispatch('deleteTaskOfUser', {user: user, task: newTask})
-```
-
-### Removing redundancy
-
-What we did so far works fine, however, there is some redundancy when calling the update and delete method. Technically it would not be necessary to pass the user parameter, as the server knows already which user a task belongs to. To address this problem, add `Task` as a root resource:
-
-```csharp
-internal static void AddResources(ResourceCollection resourceCollection)
-{
-    UserResource = resourceCollection.Add<User>();
-    UserResource.IsReadonly = true;
-    UserResource.Authenticate = true;
-    var tasksOfUsersResource = UserResource.OneToMany<Task>();
-    tasksOfUsersResource.Authenticate = true;
-    tasksOfUsersResource.ParentName = "Owner";
-    var tasksResource = resourceCollection.Add<Task>();
-    tasksResource.Authenticate = true;
-}
-```
-
-Run the generator, reset the database (with `resetdb.sh` or `resetdb.bat`) and restart the application. Now you can try the newly introduced CRUD operations:
-
-#### Add A Task
-
-```javascript
-await $vm.$store.dispatch('addTask',{title: "Learn BootGen", description: "bootgen.com", ownerId: user.id})
+newTask = await $vm.$store.dispatch('addTask', {ownerId: user.id, title: "Learn BootGen", description: "bootgen.com"})
 ```
 
 output:
@@ -310,60 +252,38 @@ output:
 $vm.$store.dispatch('deleteTask', newTask)
 ```
 
-We have now two sets of CRUD operations for the tasks. Make the nested task resource readonly to simplify it:
-
-```csharp
-tasksOfUsersResource.IsReadonly = true;
-```
-
 ## The Tags Entity
 
 We now have a basis for a To-Do list application. But what if we also would like to tag certain tasks to be "important" or "urgent" or "fun"? What if we would also like to let users to define what tags they would like to use? For this reason, let's create a `Tag` class:
 
 ```csharp
+[Authenticate]
 public class Tag
 {
     public string Name { get; set; }
     public string Color { get; set; }
+    
+    [ManyToMany(pivotName: "TaskTagPivot")]
+    public List<Task> Tasks { get; set; }
 }
 ```
-
-As we did previously with the User class, add the tags list to the `Task` class:
+The tags and the tasks are in a many-to-many relation. Add the other side of the relation in the `Task` class:
 
 ```csharp
+[Authenticate]
 [HasTimestamps]
 public class Task
 {
     public string Title { get; set; }
     public string Description { get; set; }
     public bool IsDone { get; set; }
-    [Resource]
+
+    [ManyToMany(pivotName: "TaskTagPivot")]
     public List<Tag> Tags { get; set; }
 }
 ```
 
-The relation of the `Task` and the `Tag` class is Many-To-Many. This is specified when registering the resource:
-
-```csharp
-internal static void AddResources(ResourceCollection resourceCollection)
-{
-    UserResource = resourceCollection.Add<User>();
-    UserResource.IsReadonly = true;
-    UserResource.Authenticate = true;
-    var tasksOfUsersResource = UserResource.OneToMany<Task>();
-    tasksOfUsersResource.Authenticate = true;
-    tasksOfUsersResource.IsReadonly = true;
-    tasksOfUsersResource.ParentName = "Owner";
-    var tasksResource = resourceCollection.Add<Task>();
-    tasksResource.Authenticate = true;
-    var tagsResource = resourceCollection.Add<Tag>();
-    tagsResource.Authenticate = true;
-    var tagsOfTaskResource = tasksResource.ManyToMany<Tag>();
-    tagsOfTaskResource.Authenticate = true;
-}
-```
-
-We have registered `Tag` as resource twice. The first is for maintaining a list of possible tags, the second is for assigning tags to tasks.
+It is important to set the same name for both sides of the relation.
 
 Add some sample tags to the database seed, by directly adding them to the tasks of the first user:
 
