@@ -75,6 +75,21 @@ internal static void AddSeeds(SeedDataStore seedStore)
 }
 ```
 
+## Automatic resource registration
+
+In the previous section we have seen, that the `User` class needed to be registered as a resource:
+
+```csharp
+internal static void AddResources(ResourceCollection resourceCollection)
+{
+    UserResource = resourceCollection.Add<User>();
+}
+```
+
+But you do not need to register the `Task` class, because it is already implied by the `OneToMany` attribute, that it is a resource. BootGen will discover every resource referd by the registered resources directly or indirectly.
+
+## Playing With The Application From The Browser Console
+
 Alright, lets run the generator! Use the following command in the `Generator` folder:
 
 ```sh
@@ -88,8 +103,6 @@ Check the changes in git! You will see the following:
  * The `DbContext` was extended with a tasks `DBSet`, and the database seed was extended with our example tasks.
  * The REST API specification is extended in the `restapi.yml` file.
  * The Vuex store is extended with the CRUD operations for the task entity.
- 
-## Playing With The Application From The Browser Console
  
 <p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for [Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/) </p>
 
