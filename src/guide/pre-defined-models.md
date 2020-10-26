@@ -6,7 +6,7 @@ order: 3
 
 ## User Entity
 
-Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined `User` model. In the `Generator/Models.cs` file you will find the pre-defined models, the first being the User model:
+Entity classes are an important part of our model. As most software system has users, BootGen ships with a pre-defined `User` model. In the `Generator/Models.cs` file you will find the pre-defined models, the first being the `User` model:
 
 ```csharp
 [Readonly]
@@ -45,7 +45,7 @@ export interface User {
 }
 ```
 
-You must have noticed the `ServerOnly` attribute on the `PasswordHash` property. The effect of this property is that the password hash is missing on the client side entity, and puts a `JsonIgnore` attribute on this property on the server side, preventing this attribute to be serialized into JSON. (This attribute has a counterpart: `ClientOnly`.) 
+You must have noticed the `ServerOnly` attribute on the `PasswordHash` property. The effect of this property is that the password hash is missing on the client side entity, and it puts a `JsonIgnore` attribute on this property on the server side, preventing this attribute to be serialized into JSON. (This attribute has a counterpart: `ClientOnly`.) 
 
 You also might notice that the generated entity classes have an integer identifier. This identifier is added automatically, because the user entity is persisted into the database. We will talk later about how BootGen knows that this class needs to be persisted.
 
@@ -108,16 +108,11 @@ class ProfileResponse
 }
 
 interface Registration
-{
-    [Post]
-    ProfileResponse CheckRegistration(RegistrationData data);
-    
+{   
     [Post]
     ProfileResponse Register(RegistrationData data);
 }
 ```
-
-Users expects our application to show form validation errors (like "email address is already in use") before they are actually submitting a form. We define the `CheckRegistration` method for this reason. It can check the validity of the registration form without making any changes on the server.
 
 ### Profile
 
@@ -135,17 +130,12 @@ interface Profile
     User Profile();
     
     [Post]
-    ProfileResponse CheckProfile(User user);
-    
-    [Post]
     ProfileResponse UpdateProfile(User user);
 
     [Post]
     bool ChangePassword(ChangePasswordData data);
 }
 ```
-
-The `CheckProfile` is similar to the previously defined `CheckRegistration` method. It is used to check the validity of the profile update form before the form is actually submitted.
 
 ## Vuex Store
 
