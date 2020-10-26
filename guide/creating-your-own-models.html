@@ -286,7 +286,13 @@
         &#125;
     &#125;);
 &#125;</code></pre>
-<p>Alright, lets run the generator! Use the following command in the <code>Generator</code> folder:</p>
+<h2 id="Automatic-resource-registration"><a href="#Automatic-resource-registration" class="headerlink" title="Automatic resource registration"></a>Automatic resource registration</h2><p>In the previous section we have seen, that the <code>User</code> class needed to be registered as a resource:</p>
+<pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">internal</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddResources</span>(<span class="hljs-params">ResourceCollection resourceCollection</span>)</span>
+&#123;
+    UserResource = resourceCollection.Add&lt;User&gt;();
+&#125;</code></pre>
+<p>But you do not need to register the <code>Task</code> class, because it is already implied by the <code>OneToMany</code> attribute, that it is a resource. BootGen will discover every resource referd by the registered resources directly or indirectly.</p>
+<h2 id="Playing-With-The-Application-From-The-Browser-Console"><a href="#Playing-With-The-Application-From-The-Browser-Console" class="headerlink" title="Playing With The Application From The Browser Console"></a>Playing With The Application From The Browser Console</h2><p>Alright, lets run the generator! Use the following command in the <code>Generator</code> folder:</p>
 <pre><code class="hljs sh">dotnet run</code></pre>
 <p>Check the changes in git! You will see the following:</p>
 <ul>
@@ -297,7 +303,7 @@
 <li>The REST API specification is extended in the <code>restapi.yml</code> file.</li>
 <li>The Vuex store is extended with the CRUD operations for the task entity.</li>
 </ul>
-<h2 id="Playing-With-The-Application-From-The-Browser-Console"><a href="#Playing-With-The-Application-From-The-Browser-Console" class="headerlink" title="Playing With The Application From The Browser Console"></a>Playing With The Application From The Browser Console</h2><p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for <a href="https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en" target="_blank" rel="noopener">Chrome</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/" target="_blank" rel="noopener">Firefox</a> </p>
+<p class="tip warning v3-warning"> For this step you will need  Vue.js devtools for <a href="https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en" target="_blank" rel="noopener">Chrome</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/" target="_blank" rel="noopener">Firefox</a> </p>
 
 <h3 id="Running-the-application"><a href="#Running-the-application" class="headerlink" title="Running the application"></a>Running the application</h3><p>To run the code we first need to initialize the database. If you have already done that, delete the <code>Migrations</code> folder and the <code>web_project.db</code> SQLite database. Navigate to the <code>WebProject</code> folder, then run the following commands:</p>
 <pre><code class="hljs sh">rm -rf Migrations
