@@ -199,7 +199,6 @@
       return
     }
 
-    var iframe = document.querySelector('iframe')
     var overlay = document.createElement('div')
         overlay.className = 'overlay'
     var isOpen = false
@@ -217,6 +216,7 @@
         videoModal.classList.remove('open')
         document.body.classList.remove('stop-scroll')
         document.body.removeChild(overlay)
+        ytplayer.pauseVideo()
         isOpen = false
       }
     })
