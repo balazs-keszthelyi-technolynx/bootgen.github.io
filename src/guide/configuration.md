@@ -6,7 +6,7 @@ order: 4
 
 ## Creating Resources
 
-Besides creating the domain model, an other important job is, to create a configuration. This will instruct the code generator how to use the created models.
+Besides creating the domain model, an other important job is to create a configuration. This will instruct the code generator how to use the created models.
 
 If we look into the `Generator/Configuration.cs` file, we will see that the `User` class is added to the API as a REST resource:
 
