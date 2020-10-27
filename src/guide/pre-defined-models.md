@@ -141,6 +141,6 @@ interface Profile
 
 On the client side a [Vuex store](https://github.com/BootGen/BootGenVue/blob/master/WebProject/ClientApp/src/store/index.ts) is generated. This store contains actions for all controller methods and the CRUD operations of each resource. The resource queried from the server are saved in the Vuex state.
 
-## REST API Sepcification
+## REST API Specification
 
 For documentation purposes a [REST API Specification](https://github.com/BootGen/BootGenVue/blob/master/WebProject/restapi.yml) is generated in [OpenAPI Specification 3](https://swagger.io/resources/open-api/) format.
