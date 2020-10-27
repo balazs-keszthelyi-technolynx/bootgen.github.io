@@ -32,7 +32,7 @@ In this case setting the resource name will result in the following:
  * The controller will be called `LogsEntriesController` instead of `LogsLogEntriesController`
  * The service will be called `LogsEntriesService` instead of `LogsLogEntriesService`
  
- ## Custom names for controllers and services
+ ## Custom Names for Controllers and Services
 
 If you do not like the naming convention that BootGen uses for controllers and services, or if they are against the naming policy of your company, you can set the names explicitly:
 
@@ -41,7 +41,7 @@ logEntryResource.GenerationSettings.ServiceName = "LogEntriesDataService";
 logEntryResource.GenerationSettings.ControllerName = "LogEntriesController";
 ```
 
-## Opting out from generating certain files
+## Opting Out from Generating Certain Files
 
 The generation of the controller, service and service interface is optional. You can opt-out form generating some of these file by setting any of the following properties false:
 
